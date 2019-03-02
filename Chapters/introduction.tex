@@ -1,0 +1,11 @@
+\chapter{Introduzione}
+
+La tesi che presenter\`{o} tratter\`{a} del lavoro che ho svolto durante il tirocinio presso l'azienda fiorentina E.D.P. Service. 
+L'obbiettivo del progetto \`{e} stato quello di creare un metodo per eseguire pagamenti vocali all'interno della piattaforma bancaria del cliente BPS(Suisse).
+Per definire la fattibilit\`{a} di questo progetto ho studiato innanzi tutto l'architettura del software in uso con le annesse tecnologie principali: AngularJS e Spring.
+Il passo successivo \'{e} stato quello di ricercare un metodo che permettesse di elaborare un testo preso in input e restituire in output una azione da compiere in base al contenuto dell'input. Le ricerche sono confluite in un particolare tipo di intelligenza artificiale chiamata Natural Language Understanding (che d'ora in poi indicher\'{o} con NLU), tradotto letteralmente comprensione del linguaggio naturale. 
+Il NLU \`{e} definito come la comprensione della struttura e il significato da parte degli elaboratori del linguaggio umano (per esempio Inglese, Spagnolo, Giapponese) permettendo agli utenti di interagire con i computer usando frasi naturali.
+Per la creazione effettiva del prototipo avevo quindi bisogno di un software che eseguisse il lavoro di NLU e una chat dove permettere uno scambio sia di tipo vocale che testuale con l'utente.
+La prima versione dell'intelligenza artificiale \'e stata creata grazie allo strumento messo a disposizione da Google chiamato DialogFlow. Questo strumento mi ha consentito di creare un primo modello di NLU, comprendendo l'effettivo potenziale di un'intelligenza artificiale di questo tipo. 
+Questo strumento per\'o non \'e stato scelto per lo sviluppo successivo per questioni di privacy, dato che i dati che sarebbero circolati nei server Google sarebbero stati dati di natura strettamente personale e monetaria.
+Era quindi necessario un software da poter gestire e sviluppare internamente all'azienda, che fosse open source e in una versione stabile. Leggendo in vari forum e in vari articoli Rasa era quello che faceva al caso nostro.
