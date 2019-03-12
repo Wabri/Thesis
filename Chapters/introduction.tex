@@ -1,4 +1,15 @@
 \chapter{Introduzione}
+Al giorno d'oggi l'utilizzo della voce per automatizzare i processi della vita quotidiana si sta sempre pi\'u espandendo, dall'assistente vocale nella propria casa a quello nel proprio cellulare. Sono sempre stato incuriosito da questo tipo di tecnologie e il tirocinio era il modo migliore per comprendere lo sviluppo di software di questo tipo. Il progetto mi \'e stato proposto dall'azienda fiorentina E.D.P. Service, societ\'a collegata al gruppo Best Vision, il cui scopo era creare un prototipo di chat vocale per pagamenti bancari da integrare poi nel sito del cliente BPS(suisse).
+L'azienda mi ha proposto un progetto per lo sviluppo di un software che permettesse di eseguire pagamenti vocali all'interno della piattaforma web della BPS(Suisse).
+Software di questo tipo si suddividono in 2 parti: una parte visibile all'utente con cui pu\'o interagire rappresentata dal frontend (chiamato anche interfaccia grafica) e la parte che gestisce le informazioni rappresentata dal backend (chiamata anche lato server).
+La parte del frontend gestisce principalmente le modalit\'a di accesso dell'utente consentendogli di interagire con l'applicativo per eseguire la azioni messe a disposizione, come ad esempio: visualizzare il numero di transazioni eseguite, creare un pagamento, controllare l'andamento del mercato in base a una determinata valuta. Inserire una chat che permettesse di eseguire queste azioni usando la sola voce avrebbe diminuito il numero di azioni che l'utente avrebbe dovuto eseguire per ottenere ci\'o che cercava. 
+Per poterlo fare ho studiato i linguaggi usati dalla piattaforma che principalmente era formata da codice HTML, CSS e AngularJS, web-framework di casa Google scritto in JavaScript la cui prima versione fu rilasciata nel 2010. Questa libreria permette di dinamicizzare una pagina web utilizzando dei comandi, chiamati direttive, a livello di codice HTML che vengono poi eseguiti da AngularJS una volta che la pagina viene caricata.
+Tutto ci\'o che riguarda il lato server: gestione, elaborazione e immagazzinamento dei dati forniti dal frontend, viene eseguita dal backend parte fondamentale di un servizio web bancario che deve garantire sicurezza e reperibilità dei dati. Il backend sviluppato da Best Vision \'e diviso in un servizio di database e uno di gestione del database scritto per intero in linguaggio Java usando il framework Spring. Il pagamento tramite chat doveva quindi eseguire tutte le richieste al backend nel giusto ordine prima di completare la transazione voluta: autorizzazione dell'utente alla gestione del conto, richiesta di trasferimento di capitale verso un altro utente e delega della conferma del pagamento.
+Quando un utente invia un messaggio si aspetta che venga generata una risposta consona, cioè venga eseguita una analisi del testo e formulata una frase di senso compiuto che riesca a rispondere in maniera corretta al messaggio dell'utente. La comprensione del testo viene definita comprensione del linguaggio naturale, in inglese Natural Language Understanding (d'ora in poi lo indicherò con NLU), cio\'e attribuire alla frase analizzata un intento e estrarre da essa oggetti che possono essere utili per la generazione di una risposta.
+
+Se il lavoro di comprensione e generazione della frase di risposta deve essere fatto da un computer questo non \'e semplice
+Il problema principale della creazione di un bot \'e la creazione di un metodo di comprensione del testo che l'utente ha inviato
+
 
 
 Per definire la fattibilit\'{a} di questo progetto ho studiato innanzi tutto l'architettura del software in uso con le annesse tecnologie principali: AngularJS e Spring.
@@ -29,13 +40,20 @@ La prima versione dell’intelligenza artificiale è stata creata grazie allo st
 <perchè ho scelto questa tesi>
 <perchè edp ha scelto questo percorso>
 <che progetto è?>
-Al giorno d'oggi l'utilizzo della voce per automatizzare i processi della vita quotidiana si sta sempre pi\'u espandendo, dall'assistente vocale nella propria casa a quello nel proprio cellulare. Sono sempre stato incuriosito da questo tipo di tecnologie e il tirocinio era il modo migliore per comprendere lo sviluppo di software di questo tipo. Il progetto mi \'e stato proposto dall'azienda fiorentina E.D.P. Service, societ\'a collegata al gruppo Best Vision, il cui scopo era creare un prototipo di chat vocale per pagamenti bancari da integrare poi nel sito del cliente BPS(suisse).
-L'azienda mi ha proposto un progetto per lo sviluppo di un software che permettesse di eseguire pagamenti vocali all'interno della piattaforma web della BPS(Suisse).
 
 <spiegazione generica degli elementi fondamentali del progetto>
-L'inizio del progetto è stato principalmente orientato allo studio delle componenti principali del software esistente e comprensione del pattern archietetturale Model-View-Controller presente in tutto il frontend.
+L'inizio del progetto \'e principalmente orientato allo studio delle componenti principali del software esistente e comprensione del pattern archietetturale Model-View-Controller presente in tutto il frontend.
 
 Per iniziare a sviluppare un primo prototipo della chat la prima cosa da fare \'e stata studiare le tecnologie usate dalla piattaforma: JavaScript e AngularJs.  
+
+Il progetto \'e iniziato con lo studio delle tecnologie: il patter architetturale Model-view-controller
+
+Il sfrutta in maniera massiccia il pattern architetturale Model-view-controller
+
+L'architettura di questo software si fonda sul concetto del Model-view-controller che \'e un pattern molto usato per sviluppare interfacce utente. Il MVC divide l'applicazione in 
+
+Per poter cominciare a lavorare sul software \'e stato necessario uno studio approfondito di tutte le sue componenti: i linguaggi usati, i framework, i pattern principali e la suddivisione backend e frontend.
+
 <definizione di un percorso iniziale>
 <spiegazione dell'architettura del software di BPS(swisse)>
 <studio della libreria principale usata dal frontend del software>
