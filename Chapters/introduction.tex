@@ -10,7 +10,27 @@ Quando un utente invia un messaggio si aspetta che venga generata una risposta c
 (1)
 Il chatbot voluto \'e quindi formato dalla chat e 2 tipi di intelligenza artificiale: una che esegue il NLU e un'altra che genera la risposta.
 Per entrambi i compiti ho usato una libreria open source sviluppata in Python chiamata Rasa, i tools che ho usato sono: rasa\_nlu e rasa\_core, il primo per eseguire il compito di NLU e l'altro per generare una risposta e eseguire le azioni necessarie.
+L'esecuzione di questi 2 strumenti si basa su dei modelli generati a partire da dei dataset creati precedentemente che devono contenere dei veri e propri esempi di analisi di possibili frasi che l'utente potr\'a inserire, un numero molto alto di esempi fornir\'a una precisione maggiore da parte dell'intelligenza.
+Il dataset che ho usato non è particolarmente grande dato che riuscivo comunque a presentare un prototipo di bot ragionevolmente preciso anche con un dataset di dimensioni accettabili, la popolazione del primo prototipo non superava i 60 esempi.
+Questo backend è stato poi trasferito in un server dedicato che rimaneva in ascolto di messaggi inviati dalla chat del sito web della banca
 
+
+Dato che doveva essere un prototipo non mi sono concentrato particolarmente sulla dimensione della popolazione del dataset
+Il dataset che ho usato \'e formato da una popolazione di dimensione relativamente alta rispetto all'uso che ne facevo
+Il dataset che ho creato \'e un insieme di file di testo in cui ci sono delle sequenze di possibili frasi con la relativa analisi del testo, a partire 
+Un'intelligenza artificiale di questo tipo si basa su modelli costruiti a partire da un dataset contenente un numero molto alto di esempi.
+Questo tipo di intelligenza artificiale per poter funzionare (trovare sinonimo) ha bisogno di un modello su cui basarsi per apprendere, il modello viene generato a partire da un set di dati in cui vengono inseriti dei testi che rappresentano dei veri e propri esempi di frase che l'utente potr\'a inserire.
+Una volta creato un dataset abbastanza grande sono riuscito a ottenere dei modelli accettabili per poter eseguire dei test sull'intera architettura riuscendo a ottenere dei risultati effettivi.
+Una volta creata la prima versione funzionante del backend mi sono occupato di creare un server dedicato dove 
+
+
+Il lavoro di creazione del dataset da usare per l'apprendimento dell'intelligenza artificiale \'e stato molto lungo e ripetitivo 
+
+Creare il dataset del modello \'e stato un lavoro molto lungo e ripetitivo usando anche tools grafici messi a disposizione da Rasa.
+
+Come ogni intelligenza artificiale per poter imparare a eseguire i propri compiti era necessario creare un dataset su cui essa potesse imparare
+
+Il lavoro più grosso \'e stato generare abbastanza dati su cui l'intelligenza poteva allenarsi
 
 
 
