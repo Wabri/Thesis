@@ -1,90 +1,28 @@
 \chapter{Introduzione}
-Al giorno d'oggi l'utilizzo della voce per automatizzare i processi della vita quotidiana si sta sempre pi\'u espandendo, dall'assistente vocale nella propria casa a quello nel proprio cellulare. Sono sempre stato incuriosito da questo tipo di tecnologie e il tirocinio era il modo migliore per comprendere lo sviluppo di software di questo tipo. Il progetto mi \'e stato proposto dall'azienda fiorentina E.D.P. Service, societ\'a collegata al gruppo Best Vision, il cui scopo era creare un prototipo di chat vocale per pagamenti bancari da integrare poi nel sito del cliente BPS(suisse).
-L'azienda mi ha proposto un progetto per lo sviluppo di un chatbot che permettesse di eseguire pagamenti vocali all'interno della piattaforma web della BPS(Suisse) per evitare l'utilizzo della procedura standard che implicava compilare a mano alcuni campi di testo.
-Software di questo tipo si suddividono in 2 parti: una parte visibile all'utente con cui pu\'o interagire rappresentata dal frontend (chiamato anche interfaccia grafica) e la parte che gestisce le informazioni rappresentata dal backend (chiamata anche lato server).
-La parte del frontend gestisce principalmente le modalit\'a di accesso dell'utente consentendogli di interagire con l'applicativo per eseguire la azioni messe a disposizione, come ad esempio: visualizzare il numero di transazioni eseguite, creare un pagamento, controllare l'andamento del mercato in base a una determinata valuta. Inserire una chat che permettesse di eseguire queste azioni usando la sola voce avrebbe diminuito il numero di azioni che l'utente avrebbe dovuto eseguire per ottenere ci\'o che cercava. 
-Per poterlo fare ho studiato i linguaggi usati dalla piattaforma che principalmente era formata da codice HTML, CSS e AngularJS, web-framework di casa Google scritto in JavaScript la cui prima versione fu rilasciata nel 2010. Questa libreria permette di dinamicizzare una pagina web utilizzando dei comandi, chiamati direttive, a livello di codice HTML che vengono poi eseguiti da AngularJS una volta che la pagina viene caricata.
-Tutto ci\'o che riguarda il lato server: gestione, elaborazione e immagazzinamento dei dati forniti dal frontend, viene eseguita dal backend, parte fondamentale di un servizio web bancario che deve garantire sicurezza e reperibilità dei dati. Il backend sviluppato da Best Vision \'e diviso in un servizio di database e uno di gestione del database scritto per intero in linguaggio Java usando il framework Spring. Il pagamento tramite chat doveva quindi eseguire tutte le richieste al backend nel giusto ordine prima di completare la transazione voluta: autorizzazione dell'utente alla gestione del conto, richiesta di trasferimento di capitale verso un altro utente e delega della conferma del pagamento.
-Nel mio caso il frontend \'e rappresentato dalla chat in cui l'utente pu\'o decidere se scrivere un testo con linguaggio naturale oppure utilizzare il servizio vocale, il backend della chat \'e composto da un'intelligenza artificiale che genera una risposta e agisce in base alle richieste.
+Al giorno d'oggi l'utilizzo della voce per automatizzare i processi della vita quotidiana si sta sempre pi\'u espandendo, dall'assistente vocale nella propria casa a quello nel proprio cellulare. Sono sempre stato incuriosito da questo tipo di tecnologie e il tirocinio era il modo migliore per comprendere lo sviluppo di software di questo tipo. Il progetto mi \'e stato proposto dall'azienda fiorentina E.D.P. Service, societ\'a collegata al gruppo Best Vision Holding, il cui scopo era integrare una funzionalit\'a nuova nel sito del cliente BPS(suisse) che permettesse di eseguire pagamenti o trasferimenti di denaro usando linguaggio naturale comunicando direttamente con l'applicazione.
+Il sistema di pagamento che poteva essere fatto tramite la piattaforma web era la classica procedura che prevedeva il compilamento a mano di alcuni campi di testo (brutta brutta questa frase, riguarda), come ad esempio la quantit\'a di denaro da trasferire e l'iban del conto del destinatario.
+Software di questo tipo si suddividono in 2 parti: una parte visibile all'utente con cui pu\'o interagire rappresentata dal frontend (chiamato anche interfaccia grafica) generalmente \'e l'interfaccia web, e la parte che gestisce le informazioni rappresentata dal backend (chiamata anche lato server).
+La parte del frontend gestisce principalmente le modalit\'a di accesso dell'utente consentendogli di interagire con l'applicativo eseguendo le azioni messe a disposizione, come ad esempio: visualizzare il numero di transazioni eseguite, creare un pagamento, controllare l'andamento del mercato in base a una determinata valuta. 
+Per riuscire a sviluppare un'integrazione ho studiato i linguaggi usati dalla piattaforma che principalmente era formata da codice HTML, CSS e AngularJS, web-framework di casa Google scritto in JavaScript la cui prima versione fu rilasciata nel 2010. Questa libreria permette di dinamicizzare una pagina web utilizzando dei comandi a livello di codice HTML, chiamati direttive, che vengono poi eseguiti da AngularJS una volta che la pagina web viene caricata dal browser.
+Tutto ci\'o che riguarda il lato server: gestione, elaborazione e immagazzinamento dei dati forniti dal frontend, viene eseguita dal backend, parte fondamentale di un servizio web bancario che deve garantire sicurezza e reperibilit\'a dei dati. Il backend sviluppato da Best Vision \'e diviso in un servizio di database e uno di gestione del database scritto per intero in linguaggio Java usando il framework Spring. 
+Inserire una funzionalit\'a che permettesse di eseguire queste azioni usando la sola voce avrebbe diminuito il numero di azioni che l'utente avrebbe dovuto eseguire per ottenere ci\'o che cercava, dovevo quindi imitare il comportamento umano di un funzionario (operatore,cassiere? non so quale suona meglio) di banca. Per fare questo ho pensato di creare un servizio di chat bot che riuscisse a comprendere il linguaggio naturale umano e producesse una risposta in completa autonomia eseguendo le azioni richieste dall'utente necessarie.
+Il pagamento tramite chat doveva quindi eseguire tutte le richieste al backend nel giusto ordine prima di completare la transazione voluta: autorizzazione dell'utente alla gestione del conto, richiesta di trasferimento di capitale verso un altro utente e delega della conferma del pagamento.
+Nel mio caso il frontend \'e rappresentato dalla chat in cui l'utente pu\'o decidere se scrivere un testo con linguaggio naturale oppure utilizzare il servizio vocale, il backend invece \'e composto da un'intelligenza artificiale che genera una risposta e agisce in base alle richieste.
 Quando un utente invia un messaggio si aspetta che venga generata una risposta consona, cio\'e venga eseguita una analisi del testo e formulata una frase di senso compiuto che riesca a rispondere in maniera corretta al messaggio inviato dall'utente. La analisi del testo viene definita comprensione del linguaggio naturale, in inglese Natural Language Understanding (d'ora in poi lo indicher\'o con NLU), cio\'e attribuire alla frase analizzata un intento e estrarre da essa oggetti che possono essere utili per la generazione di una risposta. L'effettiva generazione della risposta per\'o non \'e un compito che viene eseguito dal NLU, ma da un tool esterno che in base all'output fornito riesca a determinare la miglior risposta possibile.
-(1)
 Il chatbot voluto \'e quindi formato dalla chat e 2 tipi di intelligenza artificiale: una che esegue il NLU e un'altra che genera la risposta.
 Per entrambi i compiti ho usato una libreria open source sviluppata in Python chiamata Rasa, i tools che ho usato sono: rasa\_nlu e rasa\_core, il primo per eseguire il compito di NLU e l'altro per generare una risposta e eseguire le azioni necessarie.
 L'esecuzione di questi 2 strumenti si basa su dei modelli generati a partire da dei dataset creati precedentemente che devono contenere dei veri e propri esempi di analisi di possibili frasi che l'utente potr\'a inserire, un numero molto alto di esempi fornir\'a una precisione maggiore da parte dell'intelligenza.
-Il dataset che ho usato non è particolarmente grande dato che riuscivo comunque a presentare un prototipo di bot ragionevolmente preciso anche con un dataset di dimensioni accettabili, la popolazione del primo prototipo non superava i 60 esempi.
-Questo backend è stato poi trasferito in un server dedicato che rimaneva in ascolto di messaggi inviati dalla chat del sito web della banca
-
-
-Dato che doveva essere un prototipo non mi sono concentrato particolarmente sulla dimensione della popolazione del dataset
-Il dataset che ho usato \'e formato da una popolazione di dimensione relativamente alta rispetto all'uso che ne facevo
-Il dataset che ho creato \'e un insieme di file di testo in cui ci sono delle sequenze di possibili frasi con la relativa analisi del testo, a partire 
-Un'intelligenza artificiale di questo tipo si basa su modelli costruiti a partire da un dataset contenente un numero molto alto di esempi.
-Questo tipo di intelligenza artificiale per poter funzionare (trovare sinonimo) ha bisogno di un modello su cui basarsi per apprendere, il modello viene generato a partire da un set di dati in cui vengono inseriti dei testi che rappresentano dei veri e propri esempi di frase che l'utente potr\'a inserire.
-Una volta creato un dataset abbastanza grande sono riuscito a ottenere dei modelli accettabili per poter eseguire dei test sull'intera architettura riuscendo a ottenere dei risultati effettivi.
-Una volta creata la prima versione funzionante del backend mi sono occupato di creare un server dedicato dove 
-
-
-Il lavoro di creazione del dataset da usare per l'apprendimento dell'intelligenza artificiale \'e stato molto lungo e ripetitivo 
-
-Creare il dataset del modello \'e stato un lavoro molto lungo e ripetitivo usando anche tools grafici messi a disposizione da Rasa.
-
-Come ogni intelligenza artificiale per poter imparare a eseguire i propri compiti era necessario creare un dataset su cui essa potesse imparare
-
-Il lavoro più grosso \'e stato generare abbastanza dati su cui l'intelligenza poteva allenarsi
-
-
-
-
-(1)Lo sviluppo dell'intelligenza artificiale \'e stata la parte pi\'u lunga e complessa sia da comprendere che da programmare considerando che non avevo delle basi su cui partire e quindi dovevo studiarmi tutto l\'i per l\'i.
-
-Per fare questo lavoro di NLU ho utilizzato un framework scritto in Python chiamato Rasa
-Se il lavoro di comprensione e generazione della frase di risposta deve essere fatto da un computer questo non \'e semplice
-Il problema principale della creazione di un bot \'e la creazione di un metodo di comprensione del testo che l'utente ha inviato
-
-
-
-Per definire la fattibilit\'{a} di questo progetto ho studiato innanzi tutto l'architettura del software in uso con le annesse tecnologie principali: AngularJS e Spring.
-Il passo successivo \'{e} stato quello di ricercare un metodo che permettesse di elaborare un testo preso in input e restituire in output una azione da compiere in base al contenuto dell'input. Le ricerche sono confluite in un particolare tipo di intelligenza artificiale chiamata Natural Language Understanding (che d'ora in poi indicher\'{o} con NLU), tradotto letteralmente comprensione del linguaggio naturale. 
-Il NLU \`{e} definito come la comprensione della struttura e il significato da parte degli elaboratori del linguaggio umano (per esempio Inglese, Spagnolo, Giapponese) permettendo agli utenti di interagire con i computer usando frasi naturali.
-Per la creazione effettiva del prototipo avevo quindi bisogno di un software che eseguisse il lavoro di NLU e una chat dove permettere uno scambio sia di tipo vocale che testuale con l'utente.
-La prima versione dell'intelligenza artificiale \'e stata creata grazie allo strumento messo a disposizione da Google chiamato DialogFlow. Questo strumento mi ha consentito di creare un primo modello di NLU, comprendendo l'effettivo potenziale di un'intelligenza artificiale di questo tipo. 
-Questo strumento per\'o non \'e stato scelto per lo sviluppo successivo per questioni di privacy, dato che i dati che sarebbero circolati nei server Google sarebbero stati dati di natura strettamente personale e monetaria.
-Era quindi necessario un software da poter gestire e sviluppare internamente all'azienda, che fosse open source e in una versione stabile. Leggendo in vari forum e in vari articoli Rasa era quello che faceva al caso nostro.
-
-
-
-
-
-Per definire la fattibilità di questo progetto ho studiato innanzi tutto l’architettura del software in uso con le annesse tecnologie principali: AngularJS e Spring.
-
-Il passo successivo è stato quello di ricercare un metodo che permettesse di elaborare un testo preso in input e restituire in output una azione da compiere in base al contenuto dell’input. Ho deciso di utilizzare un particolare tipo di intelligenza artificiale chiamata ‘Natural Language Understanding’ (NLU), scegliendola per la sua capacità di comprensione della struttura e il significato da parte degli elaboratori del linguaggio umano (nel mio caso l’italiano) permettendo così agli utenti di interagire con i computer usando frasi di uso comune.
-
-Per la creazione effettiva del prototipo avevo quindi bisogno di un software che eseguisse il lavoro di NLU e di una chat dove permettere uno scambio sia di tipo vocale che testuale con l’utente.
-
-La prima versione dell’intelligenza artificiale è stata creata grazie allo strumento messo a disposizione da Google chiamato DialogFlow, il quale mi ha consentito di creare un primo modello di NLU. Purtroppo questo prototipo si è rivelato inutilizzabile per questioni di privacy in quanto i dati di natura strettamente personale e monetaria sarebbero stati processati da un server esterno all’azienda, 
-
-
-
+Il dataset che ho usato non è particolarmente grande dato che riuscivo comunque a presentare un prototipo di bot ragionevolmente preciso anche con un dataset di dimensioni accettabili, infatti la popolazione del primo prototipo non superava i 60 esempi.
+Completato lo sviluppo delle 2 intelligenze artificiali queste sono state inserite (non mi piace questo verbo, trovare un sinonimo adeguato) in un server dove potessero rimanere in ascolto di tutti i messaggi da parte degli utilizzatori della chat.
+L'ultimo passo \'e stato quello di integrare il prototipo della chat nel sito web di BPS(suisse) attuando alcune modifiche per quanto riguarda gli indirizzi relativi alla trasmissione dei messaggi. 
+(inserisci immagine qui: esempio rasainout).
 
 
 <frase iniziale> 
 <perchè ho scelto questa tesi>
 <perchè edp ha scelto questo percorso>
 <che progetto è?>
-
 <spiegazione generica degli elementi fondamentali del progetto>
-L'inizio del progetto \'e principalmente orientato allo studio delle componenti principali del software esistente e comprensione del pattern archietetturale Model-View-Controller presente in tutto il frontend.
-
-Per iniziare a sviluppare un primo prototipo della chat la prima cosa da fare \'e stata studiare le tecnologie usate dalla piattaforma: JavaScript e AngularJs.  
-
-Il progetto \'e iniziato con lo studio delle tecnologie: il patter architetturale Model-view-controller
-
-Il sfrutta in maniera massiccia il pattern architetturale Model-view-controller
-
-L'architettura di questo software si fonda sul concetto del Model-view-controller che \'e un pattern molto usato per sviluppare interfacce utente. Il MVC divide l'applicazione in 
-
-Per poter cominciare a lavorare sul software \'e stato necessario uno studio approfondito di tutte le sue componenti: i linguaggi usati, i framework, i pattern principali e la suddivisione backend e frontend.
-
 <definizione di un percorso iniziale>
 <spiegazione dell'architettura del software di BPS(swisse)>
 <studio della libreria principale usata dal frontend del software>
