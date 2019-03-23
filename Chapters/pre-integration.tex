@@ -22,9 +22,48 @@
 
 \section{Funzionamento e esecuzione}
 
-
+\iffalse
 <studio di javascript>
+\fi
+Per creare una chat nei moderni siti web dinamici \'e stato necessario lo studio di un linguaggio che sicuramente ha modernizzato lo sviluppo web cio\'e JavaScript soprattutto per la quantit\'a impressionante di framework sviluppati con questa tecnologia.
+\'E un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicit\'a. L'utilizzo in una pagina \'e possibile solo se il browser del client possiede un supporto a interpretare il linguaggio, questa scelta di mantenere la responsabilit\'a a livello client \'e stata fatta per non sovracaricare troppo il server che riliasciava il servizio web relativo.
+ 
+\iffalse 
 <studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
+\fi
+Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal MVC (Model View Controller).
+Il MVC \'e un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con scopi differenti: il model deve gestire i dati e fornire metodi per usarli nonch\'e la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzer\'a, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalit\'a differente di visualizzazione dei dati al view.
+\iffalse
+metti st'immagine o una simile
+https://it.wikipedia.org/wiki/File:MVC-Process.png
+\fi
+Questa struttura viene usata principalmente per dividere la logica di business con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una application. 
+L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cio\'e quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server. 
+Con il tempo \'e stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework pi\'u usato \'e AngularJs.
+Questa libreria funziona per mezzo di comandi definiti direttive che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script>:
+\lstset{frame=tb,
+  language=HTML,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\begin{lstlisting}
+<script 
+ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+</script>
+\end{lstlisting}
+Questo 
+\iffalse
 <creazione di una chat testuale>
 <integrazione di un sistema di speech recognition>
 <inserimento della comunicazione tra la chat e dialogflow>
@@ -58,18 +97,4 @@
 <il problema del xcsrf token e jsession>
 <vedi https://github.com/Wabri/UniversityInternship/blob/master/README.md#day-38-210818--75-ore per maggiori informazioni>
 <documentazione prototipo>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+\fi
