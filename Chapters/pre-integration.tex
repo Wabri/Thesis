@@ -1,12 +1,119 @@
 \chapter{Pre-integrazione}
 
-\section{Studio degli strumenti per la creazione di una chat stand alone}
 
-\subsection{Linguaggi}
+\section{Studio frontend}
+\iffalse
+<studio di javascript>
+\fi
+Per creare una chat nei moderni siti web dinamici \'e stato necessario lo studio di un linguaggio che sicuramente ha modernizzato lo sviluppo web cio\'e JavaScript soprattutto per la quantit\'a impressionante di framework sviluppati con questa tecnologia.
+\'E un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicit\'a. L'utilizzo in una pagina \'e possibile solo se il browser del client possiede un supporto a interpretare il linguaggio, questa scelta di mantenere la responsabilit\'a a livello client \'e stata fatta per non sovracaricare troppo il server che riliasciava il servizio web relativo.
+\iffalse 
+<studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
+\fi
+Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal MVC (Model View Controller).
+Il MVC \'e un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con scopi differenti: il model deve gestire i dati e fornire metodi per usarli nonch\'e la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzer\'a, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalit\'a differente di visualizzazione dei dati al view.
+\begin{figure}[H]
+ \centering
+  \includegraphics[width=0.3\textwidth]{img/MVC-Process.png}
+ \caption{MVC}
+ \end{figure}
+Questa struttura viene usata principalmente per dividere la logica di business, che \'e la parte di eleborazione dati, con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una application. 
+L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cio\'e quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server. 
+Con il tempo \'e stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework pi\'u usato \'e AngularJs.
+Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script> in questo modo:
+\lstset{ 
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
+  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{green},    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  firstnumber=0,                % start line enumeration with line 1000
+  frame=single,	                   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  language=HTML,                 % the language of the code
+  morekeywords={*,...},            % if you want to add more keywords to the set
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{mauve},     % string literal style
+  tabsize=3,	                   % sets default tabsize to 2 spaces
+  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
+}
+\begin{lstlisting}
+<script 
+ src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+</script>
+\end{lstlisting}
+Questo script esegue una lettura dell'intera pagina dove saranno presenti le direttive che dovr\'a eseguire che modificheranno (o no) le sezioni che vogliamo essere dinamiche della pagina.
 
-\subsection{Frameworks}
-
-\subsection{Frontend della chat}
+\section{Creazione della chat stand alone}
+Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra pi\'u di 2 soggetti, nel mio caso un soggetto \'e rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
+I sockets sono la soluzione migliore per chat real-time che prevedouno una communicazione bidirezionale tra un client e server, questo prevede quindi che un client mandi un messaggio in chat e il server prende l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto in un canale di comunicazione permettendo lo scambio in input e output di messaggi, in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{darkgray}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+\lstset{
+   language=JavaScript,
+   backgroundcolor=\color{white},
+   extendedchars=true,
+   basicstyle=\footnotesize\ttfamily,
+   showstringspaces=false,
+   showspaces=false,
+   numbers=left,
+   numberstyle=\footnotesize,
+   numbersep=9pt,
+   tabsize=2,
+   breaklines=true,
+   showtabs=false,
+   captionpos=b
+}
+\begin{lstlisting}
+// inviare un messaggio
+socket.emit('text message', text);
+\end{lstlisting} 
+Una volta che il messaggio viene emesso un altro socket deve ricevere questo messaggio, \'e quindi necessario che il socket del controller sia sempre in ascolto di messaggi e in base al tipo del messaggio esegua una determinata azione:
+\begin{lstlisting}
+// connessione e gestione del messaggio
+const io = require('socket.io')(server);
+io.on('connection', function (socket) {
+    socket.on('text message', (text) => {
+        // gestione del messaggio
+    });
+});
+\end{lstlisting}
+Uno dei motivi principali dello sviluppo di un chatbot \'e quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al server, un tool di questo tipo \'e definito speech recognition, in italiano riconoscimento vocale.
+Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) che impostando semplicemente la lingua mi ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
+Nel codice HTML ho inserito semplicemente un bottone che attiva il microfono e abilita la funzione di speech recognition
+\iffalse
+mettere codice? oppure continuare la spiegazione
+\fi
+Una volta implementata la comunicazione dei messaggi della chat, dato una voce al bot e infine messo a punto una grafica base (vedi figura 2) con dei pulsanti, una casella di testo in cui l'utente potesse scrivere e una zona in cui venissero stampati gli ultimi messaggi scambiati:
+\begin{figure}[H]
+ \centering
+  \includegraphics[width=0.4\textwidth]{img/prototype.png}
+ \caption{Chat prototype}
+ \end{figure}
 
 \section{Creazione dell'intelligenza artificiale}
 
@@ -22,47 +129,6 @@
 
 \section{Funzionamento e esecuzione}
 
-\iffalse
-<studio di javascript>
-\fi
-Per creare una chat nei moderni siti web dinamici \'e stato necessario lo studio di un linguaggio che sicuramente ha modernizzato lo sviluppo web cio\'e JavaScript soprattutto per la quantit\'a impressionante di framework sviluppati con questa tecnologia.
-\'E un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicit\'a. L'utilizzo in una pagina \'e possibile solo se il browser del client possiede un supporto a interpretare il linguaggio, questa scelta di mantenere la responsabilit\'a a livello client \'e stata fatta per non sovracaricare troppo il server che riliasciava il servizio web relativo.
- 
-\iffalse 
-<studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
-\fi
-Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal MVC (Model View Controller).
-Il MVC \'e un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con scopi differenti: il model deve gestire i dati e fornire metodi per usarli nonch\'e la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzer\'a, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalit\'a differente di visualizzazione dei dati al view.
-\iffalse
-metti st'immagine o una simile
-https://it.wikipedia.org/wiki/File:MVC-Process.png
-\fi
-Questa struttura viene usata principalmente per dividere la logica di business con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una application. 
-L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cio\'e quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server. 
-Con il tempo \'e stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework pi\'u usato \'e AngularJs.
-Questa libreria funziona per mezzo di comandi definiti direttive che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script>:
-\lstset{frame=tb,
-  language=HTML,
-  aboveskip=3mm,
-  belowskip=3mm,
-  showstringspaces=false,
-  columns=flexible,
-  basicstyle={\small\ttfamily},
-  numbers=none,
-  numberstyle=\tiny\color{gray},
-  keywordstyle=\color{blue},
-  commentstyle=\color{dkgreen},
-  stringstyle=\color{mauve},
-  breaklines=true,
-  breakatwhitespace=true,
-  tabsize=3
-}
-\begin{lstlisting}
-<script 
- src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
-</script>
-\end{lstlisting}
-Questo 
 \iffalse
 <creazione di una chat testuale>
 <integrazione di un sistema di speech recognition>
