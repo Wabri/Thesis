@@ -2,9 +2,6 @@
 
 
 \section{Studio frontend}
-\iffalse
-<studio di javascript>
-\fi
 Per creare una chat nei moderni siti web dinamici \'e stato necessario lo studio di un linguaggio che sicuramente ha modernizzato lo sviluppo web cio\'e JavaScript soprattutto per la quantit\'a impressionante di framework sviluppati con questa tecnologia.
 \'E un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicit\'a. L'utilizzo in una pagina \'e possibile solo se il browser del client possiede un supporto a interpretare il linguaggio, questa scelta di mantenere la responsabilit\'a a livello client \'e stata fatta per non sovracaricare troppo il server che riliasciava il servizio web relativo.
 \iffalse 
@@ -60,7 +57,7 @@ Questo script esegue una lettura dell'intera pagina dove saranno presenti le dir
 Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra pi\'u di 2 soggetti, nel mio caso un soggetto \'e rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
 I sockets sono la soluzione migliore per chat real-time che prevedouno una communicazione bidirezionale tra un client e server, questo prevede quindi che un client mandi un messaggio in chat e il server prende l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto in un canale di comunicazione permettendo lo scambio in input e output di messaggi, in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
 \lstdefinelanguage{JavaScript}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, const, var, if, in, while, do, else, case, break},
   keywordstyle=\color{blue}\bfseries,
   ndkeywords={class, export, boolean, throw, implements, import, this},
   ndkeywordstyle=\color{darkgray}\bfseries,
@@ -103,25 +100,58 @@ io.on('connection', function (socket) {
 });
 \end{lstlisting}
 Uno dei motivi principali dello sviluppo di un chatbot \'e quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al server, un tool di questo tipo \'e definito speech recognition, in italiano riconoscimento vocale.
-Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) che impostando semplicemente la lingua mi ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
-Nel codice HTML ho inserito semplicemente un bottone che attiva il microfono e abilita la funzione di speech recognition
-\iffalse
-mettere codice? oppure continuare la spiegazione
-\fi
-Una volta implementata la comunicazione dei messaggi della chat, dato una voce al bot e infine messo a punto una grafica base (vedi figura 2) con dei pulsanti, una casella di testo in cui l'utente potesse scrivere e una zona in cui venissero stampati gli ultimi messaggi scambiati:
+Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
+Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verr\'a restituita la stringa risultante che verr\'a inviata tramite socket.
+\begin{lstlisting}
+// Dichiarazione
+const SpeechRecognition = window.SpeechRecognition
+const recognition = new SpeechRecognition();
+// Proprieta'
+recognition.lang = 'it-IT';
+recognition.interimResults = false;
+// event listener click button
+document.querySelector('button').addEventListener('click', () => {
+    recognition.start();
+});
+// event listener result recognition
+recognition.addEventListener('result', (e) => {
+    let last = e.result.length - 1; 
+    let text = e.result[last][0].transcript;
+    socket.emit('chat message', text);
+});
+// event listener end recognition
+recognition.addEventListener('speechend', () => {
+  recognition.stop();
+});
+\end{lstlisting}
+Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina, per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance (https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance) che mi ha permesso di trasformare un testo in audio dando cos\'i una voce al bot.
+\begin{lstlisting}
+function synthVoice(text) {
+    const synth = window.speechSynthesis;
+    const utterance = new SpeechSynthesisUtterance();
+    utterance.text = text;
+    synth.speak(utterance);
+}
+// event bot reply
+socket.on('bot reply', function (replyText) {
+    synthVoice(replyText);
+});
+\end{lstlisting}
+L'ultima cosa da fare per la parte frontend \'e stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di: un bottone che attivasse lo speech to text, una casella di testo nel caso in cui non si vuole usare il microfono e 2 zone di testo dove riportare gli ultimi messaggi scambiati.
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.4\textwidth]{img/prototype.png}
  \caption{Chat prototype}
- \end{figure}
+\end{figure}
 
 \section{Creazione dell'intelligenza artificiale}
+\iffalse
+<inserimento della comunicazione tra la chat e dialogflow>
+<vari test di funzionamento della comunicazione>
+<passaggio da dialogflow a rasa>
+<studio di rasa nlu>
+\fi
 
-\subsection{Google-Dialogflow}
-
-\subsection{Rasa}
-
-\subsection{Creazione data set per training}
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
 
@@ -130,12 +160,6 @@ Una volta implementata la comunicazione dei messaggi della chat, dato una voce a
 \section{Funzionamento e esecuzione}
 
 \iffalse
-<creazione di una chat testuale>
-<integrazione di un sistema di speech recognition>
-<inserimento della comunicazione tra la chat e dialogflow>
-<vari test di funzionamento della comunicazione>
-<passaggio da dialogflow a rasa>
-<studio di rasa nlu>
 <creazione di un primo modello di training con vari esempi esterni al progetto>
 <processo di apprendimento del funzionamento effettivo di rasa lungo>
 <tentativo di utilizzo del modello creato precedentemente, con dialogflow, per la creazione del modello di rasa nlu>
