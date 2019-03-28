@@ -150,8 +150,21 @@ L'ultima cosa da fare per la parte frontend \'e stata una web interface minimale
 <vari test di funzionamento della comunicazione>
 <passaggio da dialogflow a rasa>
 <studio di rasa nlu>
+https://en.wikipedia.org/wiki/Human_computation
+https://en.wikipedia.org/wiki/AI-hard
+https://en.wikipedia.org/wiki/Human_computation
+https://en.wikipedia.org/wiki/Dialogflow
+https://dialogflow.com/
 \fi
-
+Per poter compiere una conversazione il bot deve essere creato con dei sistemi di natural language understanding e un'intelligenza artificiale per eseguire azioni necessarie per comprendere e rispondere alle richieste fornite dall'utente.
+Il natural language understanding (NLU) \'e una branca dell'intelligenza artificiale che cerca metodi di analizzare un testo per comprendere il significato della frase per permettere di estrarre informazioni importanti, quali l'intento della frase e le caratteristiche principali estraibili dalla frase in input. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete, cio\'e non risolvibili con un semplice algoritmo ma \'e necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
+Data la complessit\'a di questo compito ho ricercato uno strumento che eseguisse la funzione di NLU e quello che mi \'e sembrato pi\'u vicino alle mie necessit\'a era lo strumento chiamato Dialogflow che forniva tutti gli strumenti necessari per quello che il bot avrebbe dovuto fare.
+Dialogflow \'e un tool sviluppato da google per la creazione di conversazioni utente macchina in linguaggio naturale permettendo di sfruttare una tecnologia di questo tipo in qualsiasi contesto necessario, un punto di forza di questo strumento \'e l'interfaccia web molto semplificata per utenti anche alle prime armi.
+Per creare un'intelligenza artificiale di questo tipo \'e importante creare un dataset con degli esempi chiari di frasi specificando tutti gli elementi necessari, per il natural language understanding cio\'o di cui si ha bisogno \'e definire per ogni frase di esempio: l'intento e se ci sono delle entit\'a estraibili. 
+L'intento \'e il concetto principale che ci permette di indicare l'obbiettivo della frase per distinguere i vari casi che possono presentarsi durante la conversazione con un utente, avere un dataset con una popolazione varia per ogni tipo di intento che si vuole riconoscere \'e importante per permettere una precisione maggiore. 
+Le entit\'a sono invece tutti quegli oggetti che all'interno della frase risultano importanti per un uso esterno, per esempio se la richiesta dell'utente \'e il pagamento di 300 euro l'entit\'a che andremo a definire sar\'a 300 che corrisponder\'a al quantitativo di euro che dovremo richiedere di trasferire.  
+Il primo dataset che ho creato con Dialogflow era formato da pochi esempi di richieste di pagamento che ho indicato con l'intento chiamato \textbf{payRequest} formato da entit\'a \textbf{receiver}, \textbf{quantity} e \textbf{currency}.
+Il motivo della creazione di un dataset ristretto mi ha permesso di avere tempo di integrare questo nuovo strumento con il frontend testando i metodi di conversazione e l'effettivo funzionamento della chat.
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
 
