@@ -173,10 +173,15 @@ Il motivo della creazione di un dataset ristretto mi ha permesso di integrare qu
 Il passo subito successivo sarebbe stato quello di sviluppare le richieste di pagamento effettive verso il gestionale della banca attraverso delle semplici chiamate get e post, in questa fase non ho ritenuto necessario preoccuparmi del problema dell'autenticazione dell'utente nel gestionale della banca rimandando il problema una volta integrato il prototipo nella web application.
 Una volta presentato il prototipo funzionante sono stati creati alcuni issues riguardanti il problema della privacy dei dati degli utenti della banca. 
 Il problema principale era il fatto che i dati come: iban, transazione e nome dell'utente, venivano gestiti da Dialogflow quindi da un utente terzo che avrebbe potuto usare questi dati per scopi propri, mi \'e stato di conseguenza richiesto di usare un altro strumento per eseguire queste funzioni.
-Non \'e stato semplice capire quale dei tanti progetti di questo tipo era migliore
+Per risolvere questo problema ho cominciato a cercare progetti di tipo open source che racchiudessero tutte le funzionalit\'a fornite da Dialogflow permettendo lo sviluppo in locale e che fossero efficienti alla pari con il precendente strumento.
+\iffalse
+https://rasa.com/about/
+https://rasa.com/docs/
+\fi
+Il progetto open source che ho scelto di usare \'e Rasa, framework sviluppato in Python ancora in fase di sviluppo che consente di sviluppare una intelligenza artificiale utile per chatbot di qualsiasi tipo.
+Questo framework \'e diviso in 2 componenti principali: rasa\_nlu per eseguire le funzioni di natural language understanding consentendo quindi di classificare gli intenti ed estrarre le entit\'a e rasa\_core che tramite machine learning gestisce i dialoghi con l'utente. 
+L'implementazione di queste due componenti nella realt\'a che dovevo relizzare comportava la creazione di un dataset molto diverso rispetto al precedente e inoltre lo sviluppo del bot era fondato sull'implementazione di una classe Python che doveva contenere le funzionalit\'a necessarie per completare le azioni richieste dal bot.
 
-
-open source conversational AI framework
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
 
