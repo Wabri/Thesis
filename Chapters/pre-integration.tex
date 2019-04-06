@@ -53,9 +53,13 @@ Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono i
 \end{lstlisting}
 Questo script esegue una lettura dell'intera pagina dove saranno presenti le direttive che dovr\'a eseguire che modificheranno (o no) le sezioni che vogliamo essere dinamiche della pagina.
 
+
+
+
+
 \section{Creazione della chat stand alone}
-Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra pi\'u di 2 soggetti, nel mio caso un soggetto \'e rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
-I sockets sono la soluzione migliore per chat real-time che prevedouno una communicazione bidirezionale tra un client e server, questo prevede quindi che un client mandi un messaggio in chat e il server prende l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto in un canale di comunicazione permettendo lo scambio in input e output di messaggi, in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
+Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra pi\'u di 2 soggetti, nel mio caso un soggetto \'e rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo \'e possibile implementarla usando i sockets.
+I sockets sono la soluzione migliore per chat real-time che prevedono una communicazione bidirezionale tra un client e server, questo presuppone quindi che un client mandi un messaggio in chat e il server prende l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi, in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
 \lstdefinelanguage{JavaScript}{
   keywords={typeof, new, true, false, catch, function, return, null, catch, switch, const, var, if, in, while, do, else, case, break},
   keywordstyle=\color{blue}\bfseries,
@@ -89,7 +93,7 @@ I sockets sono la soluzione migliore per chat real-time che prevedouno una commu
 // inviare un messaggio
 socket.emit('text message', text);
 \end{lstlisting} 
-Una volta che il messaggio viene emesso un altro socket deve ricevere questo messaggio, \'e quindi necessario che il socket del controller sia sempre in ascolto di messaggi e in base al tipo del messaggio esegua una determinata azione:
+Una volta che il messaggio viene emesso un altro socket deve riceverlo, \'e quindi necessario che il socket del controller sia sempre in ascolto di messaggi e in base al tipo del messaggio esegua una determinata azione:
 \begin{lstlisting}
 // connessione e gestione del messaggio
 const io = require('socket.io')(server);
@@ -100,7 +104,7 @@ io.on('connection', function (socket) {
 });
 \end{lstlisting}
 Uno dei motivi principali dello sviluppo di un chatbot \'e quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al server, un tool di questo tipo \'e definito speech recognition, in italiano riconoscimento vocale.
-Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
+Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
 Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verr\'a restituita la stringa risultante che verr\'a inviata tramite socket.
 \begin{lstlisting}
 // Dichiarazione
@@ -137,12 +141,22 @@ socket.on('bot reply', function (replyText) {
     synthVoice(replyText);
 });
 \end{lstlisting}
-L'ultima cosa da fare per la parte frontend \'e stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di: un bottone che attivasse lo speech to text, una casella di testo nel caso in cui non si vuole usare il microfono e 2 zone di testo dove riportare gli ultimi messaggi scambiati.
+L'ultima cosa da fare per la parte frontend \'e stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di: un bottone che attivasse lo speech to text, una casella di testo nel caso in cui non si voglia usare il microfono e 2 zone di testo dove riportare gli ultimi messaggi scambiati.
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.4\textwidth]{img/prototype.png}
  \caption{Chat prototype}
 \end{figure}
+Il frontend ha avuto diverse riscritture a causa della poca esperienza in JavaScript che possedevo, l'ultima versione del prototipo \'e scritta in linguaggio TypeScript che ritengo molto pi\'u leggibile, facile da mantenere e comprendere nel lungo tempo. 
+TypeScript permette di non soffrire dal passaggio da linguaggi di programmazione orientati agli oggetti a JavaScript in cui sono assenti i tipi. JavaScript \'e linguaggio tipizzato che non prevede controlli statici sui tipi di dato effettuando una conversione implicita tra i tipi, questa particolarit\'a lo rende enormemente flessibile il problema arriva quando si generano errori che difficilmente sono analizzabili a runtime. 
+TypeScript \'e di per se un'estensione di JavaScript e qualsiasi script JavaScript \'e anche codice TypeScript valido. Il primo vantaggio \'e offerto dal fatto che la transizione da un progetto JavaScript esistente a TypeScript pu\'o essere fatto gradualmente, senza la necessit\'a di riscrivere tutto. Il secondo vantaggio \'e rappresentato dalla possibilit\'a di sfruttare il compilatore TypeScript su codice JavaScript standard per individuare gi\'a in fase di compilazione errori che normalmente possono sfuggire.
+Avendo provato diverse architetture frontend quella che risultava pi\'u efficiente \'e quella formata da 3 attori principali: index.html, index.ts e script.ts.
+La parte grafica rappresentata dal file index.html ha il compito di creare gli oggetti grafici e importare le librerie: jquery (https://jquery.com/) che permette la manipolazione del codice html in fase di runtime da parte di script esterni e socket.io di cui abbiamo gi\'a parlato precedentemente.
+Queste due librerie vengono usate all'interno di script.ts che ha il compito di: gestire la chat sfruttando la comunicazione socket, eseguire i compiti di voice recognition e synth voice, infine usando jquery si occupa della modifica dei tag relativi alla conversazione utente-bot. 
+La componente pi\'u importante \'e senza dubbio index.ts che crea il server su cui si appoggia tutto il frontend, per fare questo sono necessarie diverse dipendenze: dotenv con cui vengono definite delle variavili di configurazione usabili all'interno dello script consentendo una maggiore generalizzazione del prototipo, socket.io per gestire il canale di comunicazione interno, superagent usato per eseguire chiamate di tipo rest permettendo la comunicazione con servizi esterni e infine express framework che permette la creazione della web application vera e propria.
+L'ultima dipendenza si basa sullo strumento node.js che non \'e altro che un motore run-time di codice JavaScript che permette di eeguire codice JavaScript all'esterno del browser, nel mio caso ho usato questo tool per sfruttare express creando un server locale permettendo di accedere alla pagina index.html direttamente dal localhost evitando di caricare il codice in un server dedicato.  
+Il codice scritto in linguaggio TypeScript \'e stato poi compilato con il relativo compilatore generando effettivo codice JavaScript eseguibile da node.js.
+
 
 \section{Creazione dell'intelligenza artificiale}
 \iffalse
@@ -181,6 +195,7 @@ https://rasa.com/docs/
 Il progetto open source che ho scelto di usare \'e Rasa, framework sviluppato in Python ancora in fase di sviluppo che consente di sviluppare una intelligenza artificiale utile per chatbot di qualsiasi tipo.
 Questo framework \'e diviso in 2 componenti principali: rasa\_nlu per eseguire le funzioni di natural language understanding consentendo quindi di classificare gli intenti ed estrarre le entit\'a e rasa\_core che tramite machine learning gestisce i dialoghi con l'utente. 
 L'implementazione di queste due componenti nella realt\'a che dovevo relizzare comportava la creazione di un dataset molto diverso rispetto al precedente e inoltre lo sviluppo del bot era fondato sull'implementazione di una classe Python che doveva contenere le funzionalit\'a necessarie per completare le azioni richieste dal bot.
+Lo sviluppo del dataset necessario a rasa\_nlu \'e formato da file di configurazione 
 
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
