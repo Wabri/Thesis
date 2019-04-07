@@ -8,7 +8,7 @@ Per creare una chat nei moderni siti web dinamici \'e stato necessario lo studio
 <studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
 \fi
 Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal MVC (Model View Controller).
-Il MVC \'e un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con scopi differenti: il model deve gestire i dati e fornire metodi per usarli nonch\'e la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzer\'a, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalit\'a differente di visualizzazione dei dati al view.
+Il MVC \'e un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con compiti diversi: il model deve gestire i dati e fornire metodi per usarli nonch\'e la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzer\'a, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalit\'a differente di visualizzazione dei dati al view.
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.3\textwidth]{img/MVC-Process.png}
@@ -18,40 +18,12 @@ Questa struttura viene usata principalmente per dividere la logica di business, 
 L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cio\'e quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server. 
 Con il tempo \'e stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework pi\'u usato \'e AngularJs.
 Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script> in questo modo:
-\lstset{ 
-  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}; should come as last argument
-  basicstyle=\footnotesize,        % the size of the fonts that are used for the code
-  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
-  breaklines=true,                 % sets automatic line breaking
-  captionpos=b,                    % sets the caption-position to bottom
-  commentstyle=\color{green},    % comment style
-  deletekeywords={...},            % if you want to delete keywords from the given language
-  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
-  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
-  firstnumber=0,                % start line enumeration with line 1000
-  frame=single,	                   % adds a frame around the code
-  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
-  keywordstyle=\color{blue},       % keyword style
-  language=HTML,                 % the language of the code
-  morekeywords={*,...},            % if you want to add more keywords to the set
-  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
-  numbersep=5pt,                   % how far the line-numbers are from the code
-  numberstyle=\tiny\color{gray}, % the style that is used for the line-numbers
-  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
-  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
-  showstringspaces=false,          % underline spaces within strings only
-  showtabs=false,                  % show tabs within strings adding particular underscores
-  stepnumber=2,                    % the step between two line-numbers. If it's 1, each line will be numbered
-  stringstyle=\color{mauve},     % string literal style
-  tabsize=3,	                   % sets default tabsize to 2 spaces
-  title=\lstname                   % show the filename of files included with \lstinputlisting; also try caption instead of title
-}
 \begin{lstlisting}
 <script 
  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
 </script>
 \end{lstlisting}
-Questo script esegue una lettura dell'intera pagina dove saranno presenti le direttive che dovr\'a eseguire che modificheranno (o no) le sezioni che vogliamo essere dinamiche della pagina.
+Questo script esegue una lettura dell'intera pagina dove saranno presenti le direttive che dovr\'a eseguire che modificheranno (o no) le sezioni della pagina che vogliamo essere dinamiche.
 
 
 
@@ -59,40 +31,12 @@ Questo script esegue una lettura dell'intera pagina dove saranno presenti le dir
 
 \section{Creazione della chat stand alone}
 Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra pi\'u di 2 soggetti, nel mio caso un soggetto \'e rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo \'e possibile implementarla usando i sockets.
-I sockets sono la soluzione migliore per chat real-time che prevedono una communicazione bidirezionale tra un client e server, questo presuppone quindi che un client mandi un messaggio in chat e il server prende l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi, in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
-\lstdefinelanguage{JavaScript}{
-  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, const, var, if, in, while, do, else, case, break},
-  keywordstyle=\color{blue}\bfseries,
-  ndkeywords={class, export, boolean, throw, implements, import, this},
-  ndkeywordstyle=\color{darkgray}\bfseries,
-  identifierstyle=\color{black},
-  sensitive=false,
-  comment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  commentstyle=\color{purple}\ttfamily,
-  stringstyle=\color{red}\ttfamily,
-  morestring=[b]',
-  morestring=[b]"
-}
-\lstset{
-   language=JavaScript,
-   backgroundcolor=\color{white},
-   extendedchars=true,
-   basicstyle=\footnotesize\ttfamily,
-   showstringspaces=false,
-   showspaces=false,
-   numbers=left,
-   numberstyle=\footnotesize,
-   numbersep=9pt,
-   tabsize=2,
-   breaklines=true,
-   showtabs=false,
-   captionpos=b
-}
+I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client mandi un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguir\'a una azione specifica che nel caso di una chat \'e stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
 \begin{lstlisting}
 // inviare un messaggio
 socket.emit('text message', text);
 \end{lstlisting} 
+Un pacchetto trasmesso da un socket ha bisogno di 2 parametri: una chiave necessaria a riconoscere il tipo di messaggio trasmesso e un contenuto che nel nostro caso \'e il messaggio di testo.
 Una volta che il messaggio viene emesso un altro socket deve riceverlo, \'e quindi necessario che il socket del controller sia sempre in ascolto di messaggi e in base al tipo del messaggio esegua una determinata azione:
 \begin{lstlisting}
 // connessione e gestione del messaggio
@@ -103,14 +47,18 @@ io.on('connection', function (socket) {
     });
 });
 \end{lstlisting}
-Uno dei motivi principali dello sviluppo di un chatbot \'e quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al server, un tool di questo tipo \'e definito speech recognition, in italiano riconoscimento vocale.
-Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition (https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition) che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client. 
+\iffalse
+https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
+https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
+\fi
+Uno dei motivi principali dello sviluppo di un chatbot \'e quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al controller, un tool di questo tipo \'e definito speech recognition, in italiano riconoscimento vocale.
+Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client.
 Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verr\'a restituita la stringa risultante che verr\'a inviata tramite socket.
 \begin{lstlisting}
-// Dichiarazione
+// Declaration
 const SpeechRecognition = window.SpeechRecognition
 const recognition = new SpeechRecognition();
-// Proprieta'
+// Properties
 recognition.lang = 'it-IT';
 recognition.interimResults = false;
 // event listener click button
@@ -128,7 +76,7 @@ recognition.addEventListener('speechend', () => {
   recognition.stop();
 });
 \end{lstlisting}
-Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina, per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance (https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance) che mi ha permesso di trasformare un testo in audio dando cos\'i una voce al bot.
+Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina, per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance che mi ha permesso di trasformare un testo in audio dando cos\'i una voce al bot.
 \begin{lstlisting}
 function synthVoice(text) {
     const synth = window.speechSynthesis;
@@ -151,12 +99,19 @@ Il frontend ha avuto diverse riscritture a causa della poca esperienza in JavaSc
 TypeScript permette di non soffrire dal passaggio da linguaggi di programmazione orientati agli oggetti a JavaScript in cui sono assenti i tipi. JavaScript \'e linguaggio tipizzato che non prevede controlli statici sui tipi di dato effettuando una conversione implicita tra i tipi, questa particolarit\'a lo rende enormemente flessibile il problema arriva quando si generano errori che difficilmente sono analizzabili a runtime. 
 TypeScript \'e di per se un'estensione di JavaScript e qualsiasi script JavaScript \'e anche codice TypeScript valido. Il primo vantaggio \'e offerto dal fatto che la transizione da un progetto JavaScript esistente a TypeScript pu\'o essere fatto gradualmente, senza la necessit\'a di riscrivere tutto. Il secondo vantaggio \'e rappresentato dalla possibilit\'a di sfruttare il compilatore TypeScript su codice JavaScript standard per individuare gi\'a in fase di compilazione errori che normalmente possono sfuggire.
 Avendo provato diverse architetture frontend quella che risultava pi\'u efficiente \'e quella formata da 3 attori principali: index.html, index.ts e script.ts.
-La parte grafica rappresentata dal file index.html ha il compito di creare gli oggetti grafici e importare le librerie: jquery (https://jquery.com/) che permette la manipolazione del codice html in fase di runtime da parte di script esterni e socket.io di cui abbiamo gi\'a parlato precedentemente.
+\iffalse
+https://jquery.com/
+\fi
+La parte grafica rappresentata dal file index.html ha il compito di creare gli oggetti grafici e importare le librerie: jquery che permette la manipolazione del codice html in fase di runtime da parte di script esterni e socket.io di cui abbiamo gi\'a parlato precedentemente.
 Queste due librerie vengono usate all'interno di script.ts che ha il compito di: gestire la chat sfruttando la comunicazione socket, eseguire i compiti di voice recognition e synth voice, infine usando jquery si occupa della modifica dei tag relativi alla conversazione utente-bot. 
-La componente pi\'u importante \'e senza dubbio index.ts che crea il server su cui si appoggia tutto il frontend, per fare questo sono necessarie diverse dipendenze: dotenv con cui vengono definite delle variavili di configurazione usabili all'interno dello script consentendo una maggiore generalizzazione del prototipo, socket.io per gestire il canale di comunicazione interno, superagent usato per eseguire chiamate di tipo rest permettendo la comunicazione con servizi esterni e infine express framework che permette la creazione della web application vera e propria.
+La componente pi\'u importante \'e senza dubbio index.ts che crea il server su cui si appoggia tutto il frontend, per fare questo sono necessarie diverse dipendenze: dotenv con cui vengono definite delle variabili di configurazione usabili all'interno dello script consentendo una maggiore generalizzazione del prototipo, socket.io per gestire il canale di comunicazione interno, superagent usato per eseguire chiamate di tipo rest permettendo la comunicazione con servizi esterni e infine express framework che permette la creazione della web application vera e propria.
 L'ultima dipendenza si basa sullo strumento node.js che non \'e altro che un motore run-time di codice JavaScript che permette di eeguire codice JavaScript all'esterno del browser, nel mio caso ho usato questo tool per sfruttare express creando un server locale permettendo di accedere alla pagina index.html direttamente dal localhost evitando di caricare il codice in un server dedicato.  
 Il codice scritto in linguaggio TypeScript \'e stato poi compilato con il relativo compilatore generando effettivo codice JavaScript eseguibile da node.js.
-
+\begin{figure}[H]
+ \centering
+  \includegraphics[width=0.8\textwidth]{img/frontend.jpg}
+ \caption{Nlu data set example}
+\end{figure}
 
 \section{Creazione dell'intelligenza artificiale}
 \iffalse
@@ -170,8 +125,16 @@ https://en.wikipedia.org/wiki/Human_computation
 https://en.wikipedia.org/wiki/Dialogflow
 https://dialogflow.com/
 \fi
-Per poter compiere una conversazione il bot deve essere creato con dei sistemi di natural language understanding e un'intelligenza artificiale per eseguire azioni necessarie per comprendere e rispondere alle richieste fornite dall'utente.
-Il natural language understanding (NLU) \'e una branca dell'intelligenza artificiale che cerca metodi di analisi di un testo per comprendere il significato della frase estraendo informazioni importanti. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete, cio\'e non risolvibili con un semplice algoritmo ma \'e necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
+Abbiamo trattato fino a ora la parte relativa all'utente, passiamo ora alla creazione del vero e proprio bot trasformando la chat creata in un chatbot. Quello di cui un chatbot ha bisogno \'e di analizzare la frase inviata dall'utente e generare una risposta in grado di soddisfare le richieste, sono quindi necessari 2 livelli di computazione: un'intelligenza artificiale che esegue l'analisi del testo e un'altra che in base alla storia della conversazione generi una risposta il pi\'u plausibile possibile alle richieste dell'utente.
+\iffalse
+Per utilizzare un sistema di risposte automatiche \'e necessario sfruttare un'intelligenza artificiale che eseguendo un'analisi della frase inviata dall'utente deve riuscire a determinare una risposta consona alla richiesta.
+L'automatismo della conversazione viene gestito dal bot che per mezzo di un'architettura formata da 2 diverse intelligenze artificiali riesce a generare delle risposte e delle azioni
+L'automatismo di risposta della chat viene gestito da un'intelligenza artificiale che sfruttando le metodologie del natural language understanding genera 
+Per permettere la conversazione tra l'essere umano e il bot \'e necessario modellare quest'ultimo con le metodologie proprie del nlu
+La funzione di risposta automatica viene gestita da un'intelligenza artificiale 
+Per poter conversare il bot deve essere creato con dei sistemi di natural language understanding e un'intelligenza artificiale per eseguire azioni necessarie per comprendere e rispondere alle richieste fornite dall'utente. (dio la bruttezza dei questa frase)
+\fi
+\'E necessario quindi parlare di natural language understanding (NLU), una branca dell'intelligenza artificiale che cerca metodi di analisi di un testo per comprendere il significato della frase estraendo informazioni importanti. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete, cio\'e non risolvibili con un semplice algoritmo ma \'e necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
 Data la complessit\'a di questo compito ho ricercato uno strumento che eseguisse la funzione di NLU e quello che mi \'e sembrato pi\'u vicino alle mie necessit\'a era lo strumento chiamato Dialogflow che forniva tutti gli strumenti necessari per quello che il bot avrebbe dovuto fare.
 Dialogflow \'e un tool sviluppato da google per la creazione di conversazioni utente macchina in linguaggio naturale che permette di sfruttare una tecnologia di questo tipo in qualsiasi contesto necessario, un punto di forza di questo strumento \'e l'interfaccia web molto semplificata per utenti anche alle prime armi.
 Per creare un'intelligenza artificiale di questo tipo \'e importante creare un dataset con degli esempi chiari di frasi specificando tutti gli elementi necessari, per il natural language understanding ci\'o di cui si ha bisogno \'e definire per ogni esempio: l'intento della frase e se ci sono delle entit\'a estraibili utili per creare una risposta.
