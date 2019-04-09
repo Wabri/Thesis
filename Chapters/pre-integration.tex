@@ -110,7 +110,7 @@ Il codice scritto in linguaggio TypeScript \'e stato poi compilato con il relati
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.8\textwidth]{img/frontend.jpg}
- \caption{Nlu data set example}
+ \caption{Frontend Architecture}
 \end{figure}
 
 \section{Creazione dell'intelligenza artificiale}
@@ -126,14 +126,6 @@ https://en.wikipedia.org/wiki/Dialogflow
 https://dialogflow.com/
 \fi
 Abbiamo trattato fino a ora la parte relativa all'utente, passiamo ora alla creazione del vero e proprio bot trasformando la chat creata in un chatbot. Quello di cui un chatbot ha bisogno \'e di analizzare la frase inviata dall'utente e generare una risposta in grado di soddisfare le richieste, sono quindi necessari 2 livelli di computazione: un'intelligenza artificiale che esegue l'analisi del testo e un'altra che in base alla storia della conversazione generi una risposta il pi\'u plausibile possibile alle richieste dell'utente.
-\iffalse
-Per utilizzare un sistema di risposte automatiche \'e necessario sfruttare un'intelligenza artificiale che eseguendo un'analisi della frase inviata dall'utente deve riuscire a determinare una risposta consona alla richiesta.
-L'automatismo della conversazione viene gestito dal bot che per mezzo di un'architettura formata da 2 diverse intelligenze artificiali riesce a generare delle risposte e delle azioni
-L'automatismo di risposta della chat viene gestito da un'intelligenza artificiale che sfruttando le metodologie del natural language understanding genera 
-Per permettere la conversazione tra l'essere umano e il bot \'e necessario modellare quest'ultimo con le metodologie proprie del nlu
-La funzione di risposta automatica viene gestita da un'intelligenza artificiale 
-Per poter conversare il bot deve essere creato con dei sistemi di natural language understanding e un'intelligenza artificiale per eseguire azioni necessarie per comprendere e rispondere alle richieste fornite dall'utente. (dio la bruttezza dei questa frase)
-\fi
 \'E necessario quindi parlare di natural language understanding (NLU), una branca dell'intelligenza artificiale che cerca metodi di analisi di un testo per comprendere il significato della frase estraendo informazioni importanti. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete, cio\'e non risolvibili con un semplice algoritmo ma \'e necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
 Data la complessit\'a di questo compito ho ricercato uno strumento che eseguisse la funzione di NLU e quello che mi \'e sembrato pi\'u vicino alle mie necessit\'a era lo strumento chiamato Dialogflow che forniva tutti gli strumenti necessari per quello che il bot avrebbe dovuto fare.
 Dialogflow \'e un tool sviluppato da google per la creazione di conversazioni utente macchina in linguaggio naturale che permette di sfruttare una tecnologia di questo tipo in qualsiasi contesto necessario, un punto di forza di questo strumento \'e l'interfaccia web molto semplificata per utenti anche alle prime armi.
@@ -158,7 +150,72 @@ https://rasa.com/docs/
 Il progetto open source che ho scelto di usare \'e Rasa, framework sviluppato in Python ancora in fase di sviluppo che consente di sviluppare una intelligenza artificiale utile per chatbot di qualsiasi tipo.
 Questo framework \'e diviso in 2 componenti principali: rasa\_nlu per eseguire le funzioni di natural language understanding consentendo quindi di classificare gli intenti ed estrarre le entit\'a e rasa\_core che tramite machine learning gestisce i dialoghi con l'utente. 
 L'implementazione di queste due componenti nella realt\'a che dovevo relizzare comportava la creazione di un dataset molto diverso rispetto al precedente e inoltre lo sviluppo del bot era fondato sull'implementazione di una classe Python che doveva contenere le funzionalit\'a necessarie per completare le azioni richieste dal bot.
-Lo sviluppo del dataset necessario a rasa\_nlu \'e formato da file di configurazione 
+Lo sviluppo del dataset necessario a rasa\_nlu \'e formato da file di configurazione in formato Json in cui \'e necessario definire alcuni esempi come fatto con Dialogflow, un file di questo tipo \'e formato da 3 campi: regex\_feature in cui si indicano i pattern di ricerca da usare, entity\_synonyms dove indicare il modo in cui i sinonimi debbano essere trattati e infine i common\_examples il fulcro vero e proprio della definizione degli esempi.
+Gli entity synonyms vengono principalmente usati per sostituire l'entit\'a estratta dalla frase con un suo sinonimo questo viene fatto per unificare l'output delle entit\'a estratte del test analizzato, nel mio caso ho unificato le valute monetarie europee a cui dovevo fare riferimento per il prototipo quindi euro e franco svizzero.
+Il campo che definisce i common examples \'e formato a sua volta da oggetti òàè+ù
+\begin{lstlisting}
+{
+  "rasa_nlu_data": {
+    "regex_features": [],
+    "entity_synonyms": [
+    {
+        "value": "euro",
+        "synonyms": ["Euro", "eur"]
+      },
+      {
+        "value": "CHF",
+        "synonyms": ["chf", "franchi svizzeri", "Franchi Svizzeri"]
+    }],
+    "common_examples": [{
+      "text": "Vorrei pagare mario 800 euro dal mio conto personale",
+      "intent": "payRequest",
+      "entities": [{
+        "start": 14,
+        "end": 18,
+        "value": "mario",
+        "entity": "destinataryAccount"
+      },
+      {
+        "start": 20,
+        "end": 22,
+        "value": "800",
+        "entity": "totalValue"
+      },
+      {
+        "start": 24,
+        "end": 27,
+        "value": "euro",
+        "entity": "currencyValue"
+      },
+      {
+        "start": 37,
+        "end": 51,
+        "value": "conto personale",
+        "entity": "selectedAccount"
+      }]
+    }, {
+      "text": "voglio sapere il valore del conto numero 2",
+      "intent": "bankAccountTotalValue",
+      "entities": [{
+        "start": 41,
+        "end": 42,
+        "value": "2",
+        "entity": "selectedAccount"
+      }]
+    }]
+  }
+}
+
+\end{lstlisting}
+\begin{lstlisting}
+language: "it"
+
+pipeline: "spacy_sklearn"
+\end{lstlisting}
+
+
+inoltre \'e necessario anche configurare lo strumeto con un file di configurazione in formato YAML
+La configurazione viene definita tramite un singolo file in formato YAML la cui implementazione base 
 
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
