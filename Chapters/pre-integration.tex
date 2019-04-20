@@ -37,8 +37,6 @@ Questo script esegue una lettura dell'intera pagina dove saranno presenti le dir
 
 
 
-
-
 \section{Creazione della chat stand alone}
 Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra più di 2 soggetti, nel mio caso un soggetto è rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
 I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client mandi un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguirà una azione specifica che nel caso di una chat è stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io (https://socket.io) che tramite il metodo emit permette di emettere un messaggio in output:
@@ -230,9 +228,66 @@ language: "it"
 
 pipeline: "spacy_sklearn"
 \end{lstlisting}
+A questo punto dobbiamo configurare e creare l'intelligenza artificiale che si occuperà della conversazione. 
+Questo layer del backend, definito \textbf{CORE}, si occupa di gestire e mantenere la conversazione con l'utente eseguendo le azioni necessarie richieste, per questi scopi dobbiamo definire 3 componenti: domain, stories e actions.
+La componente domain è il dominio di interesse dell'intelligenza artificiale, la configurazione viene creata con un file YAML in cui vengono definiti: intents e entities da tracciare e riconoscere definiti precedentemente dal NLU, gli slots che sono dei contenitori di informazioni usabili e inizializzabili a run time, actions cioè le azioni che il bot può usare durante la conversazione e infine i templates cioè azioni default configurabili.
+\begin{lstlisting}[language=yaml,firstnumber=1]
+slots:
+  jsessionid:
+    type: text
+  xsrftoken:
+    type: text
+  valuePayment:
+    type: float
+  currencyPayment:
+    type: text
+  ibanReceiver:
+    type: text
 
+entities:
+  - accountList
+  - valuePayment
+  - currencyPayment
+  - ibanReceiver
+  - selectedAccount
 
+intents:
+  - startConversation
+  - paymentRequest
+  - totalValueOfPayment
+  - paymentRequestToIban
+  - endConversation
+  - thankYou
+  - reject
+  - confirm
 
+actions:
+  - action.ActionGreetings
+  - action.ActionPaymentTracker
+  - action.ActionGoodbye
+  - action.ActionPaymentConfermation
+  - action.ActionPaymentReject
+\end{lstlisting}
+La componente stories rappresenta un set di files in cui sono inseriti esempi di conversazione dalla più semplice a quella più complessa. Possiamo fare un esempio di questo tipo:
+\begin{lstlisting}
+Utente: "Ciao bot"
+Bot: "Salve"
+Utente: "Arrivederci"
+Bot: "Alla prossima"
+\end{lstlisting}
+Per far trasmettere la conoscenza di questo esempio all'intelligenza artificile è necessario ricreare questa conversazione in un file di configurazione in linguaggio markdown:
+\begin{lstlisting}[language=yaml]
+# storia 1
+* inizio_conversazione
+    - risposta_inizio_conversazione
+* fine_conversazione
+    - risposta_fine_conversazione
+\end{lstlisting}
+La prima riga, il cui primo carattere è \textbf{#}, rappresenta una descrizione della storia e non ha effettivamente un riscontro effettivo sul training è solo utile a livello di sviluppo per aiutare a differenziare le varie storie che vengono scritte
+Le due righe successive con primo carattere \textbf{*} e \textbf{-} sono rispettivamente la definizione dell'intento della frase dell'utente e l'azione di risposta del bot.
+Determinare delle stories il più realistiche possibili permette al bot di essere coerente con l'andamento della conversazione anche quando questa non segue i binari definiti dal modello generato.
+Infine la componente actions corrisponde ai modi in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento o la lista di conti posseduti. 
+Le varie actions vengono definite tramite tramite classi Python 
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
 
