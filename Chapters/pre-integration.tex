@@ -228,7 +228,7 @@ language: "it"
 
 pipeline: "spacy_sklearn"
 \end{lstlisting}
-A questo punto dobbiamo configurare e creare l'intelligenza artificiale che si occuperà della conversazione. 
+A questo punto dobbiamo configurare e creare l'intelligenza artificiale che si occuperà della conversazione.
 Questo layer del backend, definito \textbf{CORE}, si occupa di gestire e mantenere la conversazione con l'utente eseguendo le azioni necessarie richieste, per questi scopi dobbiamo definire 3 componenti: domain, stories e actions.
 La componente domain è il dominio di interesse dell'intelligenza artificiale, la configurazione viene creata con un file YAML in cui vengono definiti: intents e entities da tracciare e riconoscere definiti precedentemente dal NLU, gli slots che sono dei contenitori di informazioni usabili e inizializzabili a run time, actions cioè le azioni che il bot può usare durante la conversazione e infine i templates cioè azioni default configurabili.
 \begin{lstlisting}[language=yaml,firstnumber=1]
@@ -283,11 +283,33 @@ Per far trasmettere la conoscenza di questo esempio all'intelligenza artificile 
 * fine_conversazione
     - risposta_fine_conversazione
 \end{lstlisting}
-La prima riga, il cui primo carattere è \textbf{#}, rappresenta una descrizione della storia e non ha effettivamente un riscontro effettivo sul training è solo utile a livello di sviluppo per aiutare a differenziare le varie storie che vengono scritte
+La prima riga, il cui primo carattere è \textbf{\#}, rappresenta una descrizione della storia e non ha effettivamente un riscontro effettivo sul training è solo utile a livello di sviluppo per aiutare a differenziare le varie storie che vengono scritte
 Le due righe successive con primo carattere \textbf{*} e \textbf{-} sono rispettivamente la definizione dell'intento della frase dell'utente e l'azione di risposta del bot.
 Determinare delle stories il più realistiche possibili permette al bot di essere coerente con l'andamento della conversazione anche quando questa non segue i binari definiti dal modello generato.
-Infine la componente actions corrisponde ai modi in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento o la lista di conti posseduti. 
-Le varie actions vengono definite tramite tramite classi Python 
+Infine la componente actions corrispondono alle modalità in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento, che è quello che interessa a noi, o la lista di conti posseduti. 
+Le varie actions vengono definite tramite classi Python le quali devono implementare un metodo che indichi l'esecuzione nel momento in cui viene invocata l'azione relativa.
+L'implementazione di questa classe deve definire 2 metodi principali: name che deve ritornare una stringa con il nome a cui il modello dovrà fare riferimento, e il metodo run che è l'implementazione dell'azione.
+Il metodo run assume 3 parametri che potranno essere usati all'interno della definizione del metodo: dispatcher che è usato per mandare messaggi di risposta all'utente, tracker dove vengono mantenute le informazioni della conversazione con l'utente, e domain del bot di cui abbiamo precedentemente parlato.
+\begin{python}
+class ActionGreetings(Action):
+
+    def name(self):
+        return "ActionGreetings"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message("Ciao")
+        return []
+\end{python}
+Tramite la definizione di queste 3 componenti definiamo le componenti necessarie per la creazione del modello che verrà usato in fase di run time dal server rasa.
+Non c'è molto da dire per quanto riguarda il training del modello dato
+Essendo un tool completo rasa mette a disposizione anche gli strumenti per eseguire il train dei 2 modelli, basterà quindi indicare alcune configurazioni che dovrà prendere in considerazione durante l'esecuzione.
+Per quanto riguarda il NLU dovremo indicare principalmente: il config dove abbiamo definito lingua e strumento di machine learning da usare, dove si trova il dataset e il nome del modello da restituire in output.
+Allo stesso modo l'esecuzione del training del CORE avrà bisogno di informazioni riguardanti la posizione del domain e delle stories, inoltre il numero di epochs cioè il numero di iterazioni che il processo di machine learning dovrà eseguire.
+\iffalse
+https://github.com/Wabri/ChatBotPayments#32-backend
+ho spiegato il training, il passo dopo è quindi la messa in funzione del server e l'utilizzo nel frontend
+\fi
+
 
 \section{Aggiornamento Frontend per la comunicazione con Rasa}
 
