@@ -303,15 +303,107 @@ class ActionGreetings(Action):
 Tramite la definizione di queste 3 componenti definiamo le componenti necessarie per la creazione del modello che verrà usato in fase di run time dal server rasa.
 Non c'è molto da dire per quanto riguarda il training del modello dato
 Essendo un tool completo rasa mette a disposizione anche gli strumenti per eseguire il train dei 2 modelli, basterà quindi indicare alcune configurazioni che dovrà prendere in considerazione durante l'esecuzione.
-Per quanto riguarda il NLU dovremo indicare principalmente: il config dove abbiamo definito lingua e strumento di machine learning da usare, dove si trova il dataset e il nome del modello da restituire in output.
+Per quanto riguarda il NLU dovremo indicare principalmente: il config dove abbiamo definito la lingua e lo strumento di machine learning da usare, dove si trova il dataset e il nome del modello da restituire in output.
 Allo stesso modo l'esecuzione del training del CORE avrà bisogno di informazioni riguardanti la posizione del domain e delle stories, inoltre il numero di epochs cioè il numero di iterazioni che il processo di machine learning dovrà eseguire.
+L'inizializzazione del server avrà bisogno dei due modelli creati e un indirizzo più una porta in cui rimanere in ascolto di richieste esterne, in più ho definito anche un token per rendere la comunicazione più sicura.
+
+\section{Aggiornamento Frontend}
+Per poter comunicare con il nuovo server è necessario modificare alcune variabili del frontend quali: l'indirizzo del server, la porta in cui è possibile eseguire le chiamate, e il token usato.
+Per rendere più semplice la manutenzione delle informazioni riguardanti il server ho utilizzato un file di configurazione adibito:
+\begin{lstlisting}
+SERVER_IP_RASA=127.0.0.1
+SERVER_PORT_RASA=5000
+TOKEN_RASA=securitytoken
+\end{lstlisting}
+Che viene poi importato a runtime dal frontend usando la libreria javascript dotenv:
+\begin{lstlisting}[language=JavaScript]
+// ----- caricamento delle configurazioni definite nel file .env ----- //
+const dotenv = require("dotenv");
+dotenv.config();
+// ----- fine caricamento delle configurazioni definite nel file .env ----- //
+// ----- implementazione oggetto in cui si trovano informazioni App ----- //
+class Settings {
+    constructor(rasaIP, rasaPort, token) {
+        this.rasaIP = rasaIP;
+        this.rasaPort = rasaPort;
+        this.token = token;
+    }
+}
+const settingsApp = new Settings(process.env.SERVER_IP_RASA, process.env.SERVER_PORT_RASA, process.env.TOKEN_RASA);
+\end{lstlisting}
+La comunicazione con il server avviene grazie alla definizione di una classe chiamata ComunicationRasaManager implementata nel index.js in cui è definita la funzione questionAndAnswer:
+\begin{lstlisting}[language=JavaScript]
+// ----- Gestione comunicazione con rasa core ---- //
+class comunicationRasaManager {
+    static questionAndAnswer(socket, message, rasaAddress, userID, token) {
+        try {
+            sa.post(rasaAddress + "/conversations/" + userID + "/parse" + "?token=" + token)
+                .set("Content-Type", "application/json")
+                .send({
+                query: message
+            })
+                .end(function (err, res) {
+                try {
+                    var arr = JSON.parse(res.text);
+                    console.log("Sender: " + arr.tracker["sender_id"]);
+                    console.log("next_action: " + arr.next_action);
+                    if (arr.next_action != "action_listen") {
+                        sa.post(rasaAddress + "/conversations/" + userID + "/respond?token=" + token)
+                            .set("Content-Type", "application/json")
+                            .send({
+                            query: message
+                        })
+                            .end(function (err, res) {
+                            var arrt = JSON.parse(res.text);
+                            console.log("botResponse: " + arrt[0].text);
+                            socket.emit("botResponse", arrt[0].text);
+                            return;
+                        });
+                    }
+                    else {
+                        socket.emit("botResponse", "Puoi cercare di essere più chiaro?");
+                        return;
+                    }
+                }
+                catch (err) {
+                    console.log("errore: " + err);
+                    socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+                    return;
+                }
+            });
+        }
+        catch (err) {
+            console.log("**** C'è stato un errore durante la chiamata verso rasa ****");
+            console.log("errore: " + err);
+            socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+            return;
+        }
+    }
+    static conversationReset(socket, rasaAddress, userID, token) {
+        try {
+            sa.post(rasaAddress + "/conversations/" + userID + "/continue?token=" + token)
+                .set("Content-Type", "application/json")
+                .send({
+                events: [{ event: "restart" }]
+            })
+                .end((err, res) => {
+                console.log("**** reset conversation ****");
+                socket.emit("botResponse", "La conversazione è stata cancellata");
+            });
+        }
+        catch (err) {
+            console.log("**** C'è stato un errore durante la chiamata verso rasa ****");
+            console.log("errore: " + err);
+            socket.emit("botResponse", "In questo momento il servizio non è attivo, riprovare più tardi!");
+            return;
+        }
+    }
+}
+\end{lstlisting}
 \iffalse
-https://github.com/Wabri/ChatBotPayments#32-backend
-ho spiegato il training, il passo dopo è quindi la messa in funzione del server e l'utilizzo nel frontend
+ricontrolla il codice appena copiato sopra, rimuovi e spiega le cose meglio
 \fi
 
-
-\section{Aggiornamento Frontend per la comunicazione con Rasa}
 
 \section{Sistema di pagamento vocale}
 
