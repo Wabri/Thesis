@@ -28,7 +28,7 @@ Questa struttura viene usata principalmente per dividere la logica di business, 
 L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cioè quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server.
 Con il tempo è stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework più usato è AngularJs.
 Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script> in questo modo:
-\begin{lstlisting}[language=Html]
+\begin{lstlisting}[language=betterHtml]
 <script
  src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
 </script>
@@ -334,7 +334,7 @@ const settingsApp = new Settings(process.env.SERVER_IP_RASA, process.env.SERVER_
 La comunicazione con il server avviene grazie alla definizione di una classe chiamata ComunicationRasaManager implementata nel index.js in cui è definita la funzione questionAndAnswer:
 \begin{lstlisting}[language=JavaScript]
 // ----- Gestione comunicazione con rasa core ---- //
-class comunicationRasaManager {
+class ComunicationRasaManager {
     static questionAndAnswer(socket, message, rasaAddress, userID, token) {
        ... 
     }
