@@ -8,7 +8,7 @@ Per creare una chat nei moderni siti web dinamici è stato necessario lo studio 
 <studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
 AngularJS: Up and Running
 Enhanced Productivity with Structured Web Apps
-By Brad Green, Shyam Seshadri 
+By Brad Green, Shyam Seshadri
 O'Reilly Media
 
 https://docs.angularjs.org/tutorial/
@@ -99,7 +99,7 @@ socket.on('bot reply', function (replyText) {
     synthVoice(replyText);
 });
 \end{lstlisting}
-L'ultima cosa da fare per la parte frontend è stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di: 
+L'ultima cosa da fare per la parte frontend è stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di:
 \begin{itemize}
 \item un bottone che attivasse lo speech to text,
 \item una casella di testo nel caso in cui non si voglia usare il microfono,
@@ -311,7 +311,7 @@ Per far trasmettere la conoscenza di questo esempio all'intelligenza artificile 
 La prima riga, il cui primo carattere è \textbf{\#}, rappresenta una descrizione della storia e non ha effettivamente un riscontro effettivo sul training è solo utile a livello di sviluppo per aiutare a differenziare le varie storie che vengono scritte.
 Le due righe successive con primo carattere \textbf{*} e \textbf{-} sono rispettivamente la definizione dell'intento della frase dell'utente e l'azione di risposta del bot.
 Determinare delle stories il più realistiche possibili permette al bot di essere coerente con l'andamento della conversazione anche quando questa non segue i binari definiti dal modello generato.
-Infine la componente actions corrispondono alle modalità in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento, che è quello che interessa a noi, o la lista di conti posseduti. 
+Infine la componente actions corrispondono alle modalità in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento, che è quello che interessa a noi, o la lista di conti posseduti.
 Le varie actions vengono definite tramite classi Python le quali devono implementare un metodo che indichi l'esecuzione nel momento in cui viene invocata l'azione relativa.
 L'implementazione di questa classe deve definire 2 metodi principali: name che deve ritornare una stringa con il nome a cui il modello dovrà fare riferimento, e il metodo run che è l'implementazione dell'azione.
 Il metodo run assume 3 parametri che potranno essere usati all'interno della definizione del metodo: dispatcher che è usato per mandare messaggi di risposta all'utente, tracker dove vengono mantenute le informazioni della conversazione con l'utente, e domain del bot di cui abbiamo precedentemente parlato.
@@ -361,24 +361,43 @@ La comunicazione con il server avviene grazie alla definizione di una classe chi
 // ----- Gestione comunicazione con rasa core ---- //
 class ComunicationRasaManager {
     static questionAndAnswer(socket, message, rasaAddress, userID, token) {
-       ... 
+       ...
     }
     static conversationReset(socket, rasaAddress, userID, token) {
         ...
     }
 }
 \end{lstlisting}
-
+Il metodo definito conversationReset è stato usato in fase di test per azzerare la memoria della conversazione salvata da rasa core.
+Il metodo questionAndAnswer assume 5 argomenti, relativamente:
+\begin{itemize}
+\item l'oggetto socket che si occupa del canale di comunicazione interno al client,
+\item il messaggio che deve essere inviato al server rasa,
+\item lo URL relativo all'indirizzo di provenienza del server rasa,
+\item l'identificativo univoco dell'utente,
+\item e infine il token che rappresenta la chiave per poter aver accesso al server.
+\end{itemize}
+L'implementazione del metodo esegue una chiamata POST verso il server che in base alle informazioni che ha memorizzato relative alla conversazione con l'utente darà come risposta un JSON contenente le informazioni estratte dal messaggio, tra cui è indicata il nome della prossima azione che il bot eseguirà.
+\'E necessario ora recuperare il messaggio generato dall'intelligenza artificiale e inviarlo all'utente tramite socket:
+\begin{lstlisting}[language=JavaScript]
+sa.post(rasaAddress + "/conversations/" + userID + "/respond?token="+token)
+                .set("Content-Type", "application/json")
+                .send({
+                  query: message
+                })
+                .end(function(err, res) {
+                  var bot_message = JSON.parse(res.text);
+                  socket.emit("botResponse", bot_message[0].text);
+                  return;
+});
+\end{lstlisting}
+L'oggetto sa è il superagent usato per eseguire le chiamate di tipo REST, in questo caso viene eseguita nuovamente una chiamata di tipo POST con un payload contenente il messaggio dell'utente. Se la chiamata va a buon fine viene gestita la risposta inviando il messaggio tramite socket al client che vedrà visualizzata la risposta nell'appostio box della chat.
 
 \section{Sistema di pagamento vocale}
 
 \section{Funzionamento e esecuzione}
 
 \iffalse
-<creazione di un primo modello di training con vari esempi esterni al progetto>
-<processo di apprendimento del funzionamento effettivo di rasa lungo>
-<tentativo di utilizzo del modello creato precedentemente, con dialogflow, per la creazione del modello di rasa nlu>
-<passaggio di competenze(?) da dialogflow a rasa, eliminando la comunicazione effettiva con google>
 <connessione con il server bps e rasa>
 <per errore ho lasciato che la chat inviasse ancora i dati di test ai server di dialogflow = rasa>dialogflow>
 <tutor universitario consiglia l'uso di typescript => studio di typescript => riscrittura della chat usando typescript>

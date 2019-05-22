@@ -17,8 +17,8 @@ L'analisi del testo viene definita comprensione del linguaggio naturale, in ingl
 L'effettiva generazione della risposta però non è un compito che viene esercitato dal NLU, ma da un Natural Language Generator (NLG) che in base all'analisi precedente riesca a determinare la miglior risposta possibile.
 \begin{figure}[H]
  \centering
-    \includegraphics[width=0.4\textwidth]{img/nlu_nlg.png}
- \caption{Chat prototype}
+    \includegraphics[width=0.4\textwidth]{img/nlu_nlg.jpg}
+ \caption{Nlu and Nlg}
 \end{figure}
 Il chatbot voluto è quindi formato dalla chat e 2 tipi di intelligenza artificiale: una che esegue il NLU e un'altra che racchiuda il compito di NLG.
 \iffalse
@@ -31,35 +31,13 @@ https://www.sisense.com/glossary/natural-language-understanding/
 \fi
 Per la creazione del bot ho usato una libreria open source sviluppata in Python chiamata \textbf{Rasa}, che mette a disposizione tutti gli strumenti che servono per poter sviluppare intelligenze artificiali di questo tipo. I tools che ho usato sono: rasa\_nlu e rasa\_core, il primo per eseguire il compito di NLU e l'altro quello di NLG eseguendo anche le azioni necessarie.
 La corretta esecuzione degli strumenti appena descritti si basa su modelli generati grazie a dataset precedentemente realizzati, i quali contengono veri e propri esempi di frasi e possibili conversazioni che l'utente potrebbe usare.
-Teoricamente questo tipo di processo richiederebbe un numero molto elevato di esempi per essere più preciso, in questo caso però mi è bastato creare un dataset con una popolazione di soli 60 esempi per ottenere un prototipo di bot ragionevolmente preciso. 
+Teoricamente questo tipo di processo richiederebbe un numero molto elevato di esempi per essere più preciso, in questo caso però mi è bastato creare un dataset con una popolazione di soli 60 esempi per ottenere un prototipo di bot ragionevolmente preciso.
 Completato lo sviluppo delle 2 intelligenze artificiali queste sono state collocate in un server dove potessero rimanere in ascolto di tutti i messaggi da parte dei clienti.
 L'ultimo passo è stato quello di integrare il prototipo della chat nel sito web di BPS(suisse) attuando alcune modifiche sia lato backend, in cui sono state aggiunte alcune proprietà per rendere il server più sicuro, sia lato frontend, modificando la web application includendo la chat da me creata.
 Questo ha completato il lavoro di tirocinio consentendo all'azienda di inserire nella fase di produzione e miglioramento l'integrazione da me sviluppata.
 \begin{figure}[H]
  \centering
-    \includegraphics[width=0.4\textwidth]{img/nlu_nlg.png}
- \caption{Chat prototype}
+    \includegraphics[width=0.4\textwidth]{img/last_architecture.jpg}
+ \caption{Architecture}
 \end{figure}
 
-\iffalse
-<frase iniziale>
-<perchè ho scelto questa tesi>
-<perchè edp ha scelto questo percorso>
-<che progetto è?>
-<spiegazione generica degli elementi fondamentali del progetto>
-<definizione di un percorso iniziale>
-<spiegazione dell'architettura del software di BPS(swisse)>
-<studio della libreria principale usata dal frontend del software>
-<studio degli elementi principali per la creazione del frontend ----> chat di testo>
-<creazione della chat e test del prototipo usando sia testo che voce>
-<studio di una possibile implementazione del backend di nlu>
-<perchè è stato scelto di non usare dialogflow>
-<passaggio a RASA>
-<sviluppo del primo modello usato per il NLU>
-<creazione del server rasa>
-<refactor chat>
-<perfezionamento del modello di NLU>
-<integrazione>
-<problemi affrontati durante l'integrazione>
-<conclusione introduzione>
-\fi
