@@ -1,10 +1,9 @@
 \chapter{Introduzione}
+\section{Azienda}
 Al giorno d'oggi l'utilizzo della voce per automatizzare i processi della vita quotidiana si sta sempre più espandendo, dall'assistente vocale nella propria casa a quello nel proprio cellulare. Sono sempre stato incuriosito da questo tipo di tecnologie e il tirocinio era il modo migliore per comprendere lo sviluppo di software di questo tipo. Il progetto mi è stato proposto dall'azienda fiorentina E.D.P. Service, società collegata al gruppo Best Vision Holding, il cui scopo era integrare una funzionalità nuova nel sito del cliente BPS(suisse) che permettesse di eseguire pagamenti o trasferimenti di denaro usando linguaggio naturale comunicando direttamente con l'applicazione.
-I pagamenti compiuti tramite la piattaforma web utilizzano la classica procedura di compilamento manuale di alcuni campi di testo, come ad esempio la quantità di denaro da trasferire e l'iban del conto del destinatario.
-Software di questo tipo si suddividono in 2 parti: una parte adibita all'interazione utente definita interfaccia grafica o frontend, e la parte che gestisce le informazioni chiamata backend o lato server.
-\iffalse
-https://it.wikipedia.org/wiki/Front-end\_e\_back-end
-\fi
+\section{Analisi del problema}
+Software di questo tipo si suddividono in 2 parti: una parte adibita all'interazione utente definita interfaccia grafica o frontend e la parte che gestisce le informazioni chiamata backend o lato server.
+\iffalse https://it.wikipedia.org/wiki/Front-end_e_back-end \fi
 La parte del frontend gestisce principalmente le modalità di accesso dell'utente consentendogli di interagire con l'applicativo eseguendo le azioni messe a disposizione, come ad esempio: visualizzare il numero di transazioni eseguite, creare un pagamento, controllare l'andamento del mercato in base a una determinata valuta.
 Per riuscire a sviluppare un'integrazione in questo sistema ho studiato i linguaggi usati dalla piattaforma della banca, principalmente formata da codice HTML, CSS, e AngularJS.
 L'ultimo citato è un web-framework di casa Google scritto in JavaScript che permette di dinamicizzare una pagina web utilizzando dei comandi a livello di codice HTML, chiamati direttive, che vengono poi eseguiti da AngularJs una volta che la pagina web viene caricata dal browser.
@@ -13,7 +12,7 @@ Inserire una funzionalità che permettesse di eseguire queste azioni usando la s
 Il pagamento tramite chat doveva quindi eseguire tutte le richieste al server nel giusto ordine prima di completare la transazione voluta: autorizzazione per accedere al conto dell'utente, richiesta di trasferimento di capitale verso terzi e delega della conferma del transazione.
 Nel mio caso il frontend è rappresentato dalla chat in cui l'utente può decidere se scrivere un testo con linguaggio naturale oppure utilizzare il servizio vocale, il backend invece è composto da un'intelligenza artificiale che genera una risposta e agisce in base alle richieste.
 Quando un utente invia un messaggio si aspetta che venga generata una risposta consona, cioè venga eseguita una analisi del testo e formulata una frase di senso compiuto che riesca a rispondere in maniera corretta al messaggio inviato.
-L'analisi del testo viene definita comprensione del linguaggio naturale, in inglese Natural Language Understanding (NLU), cioè attribuire alla frase analizzata un intento e estrarre da essa oggetti che possono essere utili per la generazione di una risposta.
+L'analisi del testo viene definita comprensione del linguaggio naturale, in inglese Natural Language Understanding (NLU), cioè attribuire alla frase analizzata un intento ed estrarre da essa oggetti che possono essere utili per la generazione di una risposta.
 L'effettiva generazione della risposta però non è un compito che viene esercitato dal NLU, ma da un Natural Language Generator (NLG) che in base all'analisi precedente riesca a determinare la miglior risposta possibile.
 \begin{figure}[H]
  \centering
@@ -41,3 +40,6 @@ Questo ha completato il lavoro di tirocinio consentendo all'azienda di inserire 
  \caption{Architecture}
 \end{figure}
 
+\iffalse
+I pagamenti compiuti tramite la piattaforma web utilizzano la classica procedura di compilamento manuale di alcuni campi di testo, come ad esempio la quantità di denaro da trasferire e l'iban del conto del destinatario.
+\fi

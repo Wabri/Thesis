@@ -1,9 +1,9 @@
-\chapter{Pre-integrazione}
 
+\chapter{Pre-integrazione}
 
 \section{Studio frontend}
 Per creare una chat nei moderni siti web dinamici è stato necessario lo studio di un linguaggio che sicuramente ha modernizzato lo sviluppo web cioè JavaScript soprattutto per la quantità impressionante di framework sviluppati con questa tecnologia.
-È un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicità. L'utilizzo in una pagina è possibile solo se il browser del client possiede un supporto a interpretare il linguaggio, questa scelta di mantenere la responsabilità a livello client è stata fatta per non sovracaricare troppo il server che riliasciava il servizio web relativo.
+È un linguaggio interpretato, che ha molto poco a che fare con il quasi omonimo Java, la prima versione venne rilasciata nel 1995 con l'obbiettivo di arricchire le pagine web aggiungendo alcune forme di dinamicità. L'utilizzo in una pagina è possibile solo se il browser del client possiede un supporto per interpretare il linguaggio. Questa scelta di mantenere la responsabilità a livello client è stata fatta per non sovraccaricare troppo il server che rilasciava il servizio web relativo.
 \iffalse
 <studio di angularjs nel libro (vedi https://github.com/Wabri/UniversityInternship#day-01-020518--55-ore)>
 AngularJS: Up and Running
@@ -18,14 +18,14 @@ Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumen
 https://www.javascript.com/about
 https://it.wikipedia.org/wiki/Javascript
 \fi
-Il MVC è un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con compiti diversi: il model deve gestire i dati e fornire metodi per usarli nonchè la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sotto forma di informazione in modo tale da interagire con l'utente che li visualizzerà, e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalità differente di visualizzazione dei dati al view.
+Il MVC è un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con compiti diversi: il model deve gestire i dati e fornire metodi per usarli nonchè la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sottoforma di informazione in modo tale da interagire con l'utente che li visualizzerà e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalità differente di visualizzazione dei dati al view.
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.3\textwidth]{img/MVC-Process.png}
  \caption{MVC}
  \end{figure}
 Questa struttura viene usata principalmente per dividere la logica di business, che è la parte di eleborazione dati, con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una application.
-L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cioè quello di non eseguire un redirect per modificare la pagina ma eseguendo chiamate asincrone al server.
+L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cioè quello di non eseguire un redirect per modificare la pagina, ma eseguendo chiamate asincrone al server.
 Con il tempo è stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework più usato è AngularJs.
 Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script> in questo modo:
 \begin{lstlisting}[language=betterHtml]
@@ -37,8 +37,8 @@ Questo script esegue una lettura dell'intera pagina dove saranno presenti le dir
 
 
 \section{Creazione della chat stand alone}
-Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra 2 o più soggetti, nel mio caso un soggetto è rappresentato da l'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
-I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client mandi un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguirà una azione specifica che nel caso di una chat è stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io  che tramite il metodo emit permette di emettere un messaggio in output:
+Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra 2 o più soggetti, nel mio caso un soggetto è rappresentato dall'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
+I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client invii un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguirà una azione specifica che nel caso di una chat è stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io  che tramite il metodo emit permette di emettere un messaggio in output:
 \begin{lstlisting}[language=JavaScript]
 // inviare un messaggio
 socket.emit('text message', text);
@@ -62,8 +62,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
 \fi
 Uno dei motivi principali dello sviluppo di un chatbot è quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al controller. Un tool di questo tipo è definito speech recognition, in italiano riconoscimento vocale.
-Ho usato una libreria sviluppata da mozilla chiamata proprio SpeechRecognition che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client.
-Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verrà restituita la stringa risultante che verrà inviata tramite socket.
+Ho usato una libreria sviluppata da Mozilla chiamata proprio SpeechRecognition che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client.
+Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verrà restituita la stringa risultante che sarà inviata tramite socket.
 \begin{lstlisting}[language=JavaScript]
 // Declaration
 const SpeechRecognition = window.SpeechRecognition
@@ -86,7 +86,7 @@ recognition.addEventListener('speechend', () => {
   recognition.stop();
 });
 \end{lstlisting}
-Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina, per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance che mi ha permesso di trasformare un testo in audio dando così una voce al bot.
+Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina. Per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance che mi ha permesso di trasformare un testo in audio dando così una voce al bot.
 \begin{lstlisting}[language=JavaScript]
 function synthVoice(text) {
     const synth = window.speechSynthesis;
@@ -138,7 +138,7 @@ La componente più importante è senza dubbio index.ts che crea il server su cui
 \item \textbf{superagent} usato per eseguire chiamate di tipo rest permettendo la comunicazione con servizi esterni,
 \item  \textbf{express} framework che permette la creazione della web application vera e propria.
 \end{itemize}
-L'ultima dipendenza si basa sullo strumento node.js che non è altro che un motore run-time di codice JavaScript che permette di eeguire codice JavaScript all'esterno del browser, nel mio caso ho usato questo tool per sfruttare express creando un server locale permettendo di accedere alla pagina index.html direttamente dal localhost evitando di caricare il codice in un server dedicato.
+L'ultima dipendenza si basa sullo strumento node.js che non è altro che un motore run-time di codice JavaScript che permette di eseguire codice JavaScript all'esterno del browser. Nel mio caso ho usato questo tool per sfruttare express creando un server locale permettendo di accedere alla pagina index.html direttamente dal localhost evitando di caricare il codice in un server dedicato.
 Il codice scritto in linguaggio TypeScript è stato poi compilato con il relativo compilatore generando effettivo codice JavaScript eseguibile da node.js.
 \begin{figure}[H]
  \centering
@@ -158,12 +158,12 @@ https://en.wikipedia.org/wiki/Human_computation
 https://en.wikipedia.org/wiki/Dialogflow
 https://dialogflow.com/
 \fi
-Abbiamo trattato fino a ora la parte relativa all'utente, passiamo ora alla creazione del vero e proprio bot trasformando la chat creata in un chatbot. Quello di cui un chatbot ha bisogno è di analizzare la frase inviata dall'utente e generare una risposta in grado di soddisfare le richieste, sono quindi necessari 2 livelli di computazione: un'intelligenza artificiale che esegue l'analisi del testo e un'altra che in base alla storia della conversazione generi una risposta il più plausibile possibile alle richieste dell'utente.
-\'E necessario quindi parlare di natural language understanding (NLU), una branca dell'intelligenza artificiale che cerca metodi di analisi di un testo per comprendere il significato della frase estraendo informazioni importanti. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete, cioè non risolvibili con un semplice algoritmo ma è necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
+Abbiamo trattato fino ad ora la parte relativa all'utente, passiamo ora alla creazione del vero e proprio bot trasformando la chat creata in un chatbot. Quello di cui un chatbot ha bisogno è di analizzare la frase inviata dall'utente e generare una risposta in grado di soddisfare le richieste, sono quindi necessari 2 livelli di computazione: un'intelligenza artificiale che esegue l'analisi del testo e un'altra che in base alla storia della conversazione generi una risposta il più plausibile possibile alle richieste dell'utente.
+\'E necessario quindi parlare di natural language understanding (NLU), una branca dell'intelligenza artificiale che cerca metodi di analisi di un testo per comprendere il significato della frase estraendo informazioni importanti. Problemi di questo tipo sono considerati AI-Hard, chiamati anche AI-Complete. Questa tipologia non è risolvibile con un semplice algoritmo, ma è necessaria la supervisione dell'uomo che addestra l'intelligenza a risolvere un problema specifico.
 Data la complessità di questo compito ho ricercato uno strumento che eseguisse la funzione di NLU e quello che mi è sembrato più vicino alle mie necessità era lo strumento chiamato Dialogflow che forniva tutti gli strumenti necessari per quello che il bot avrebbe dovuto fare.
-Dialogflow è un tool sviluppato da Google per la creazione di conversazioni utente macchina in linguaggio naturale che permette di sfruttare una tecnologia di questo tipo in qualsiasi contesto necessario, un punto di forza di questo strumento è l'interfaccia web molto semplificata per utenti anche alle prime armi.
-Per creare un'intelligenza artificiale di questo tipo è importante creare un dataset con degli esempi chiari di frasi specificando tutti gli elementi necessari, per il natural language understanding ciò di cui si ha bisogno è definire per ogni esempio l'intento della frase e se ci sono delle entità estraibili utili per creare una risposta.
-L'intento è il concetto principale che permette di indicare l'obbiettivo della frase per distinguere i vari casi che possono presentarsi durante la conversazione con un utente, avere quindi un dataset con una popolazione molto varia consente di avere un addestramento dell'intelligenza migliore e preciso in fase di runtime.
+Dialogflow è un tool sviluppato da Google per la creazione di conversazioni utente macchina in linguaggio naturale che permette di sfruttare una tecnologia di questo tipo in qualsiasi contesto necessario, un punto di forza di questo strumento è l'interfaccia web molto semplificata per utenti anche alle prime .rmi.
+Per creare un'intelligenza artificiale di questo tipo è importante creare un dataset con degli esempi chiari di frasi specificando tutti gli elementi necessari. Per il natural language understanding ciò di cui si ha bisogno è definire per ogni esempio l'intento della frase e se ci sono delle entità estraibili utili per creare una risposta.
+L'intento è il concetto principale che permette di indicare l'obbiettivo della frase per distinguere i vari casi che possono presentarsi durante la conversazione con un utente. Avere quindi un dataset con una popolazione molto varia consente di avere un addestramento dell'intelligenza migliore e preciso.
 Le entità sono invece tutti quegli oggetti che all'interno della frase risultano importanti per un uso esterno, per esempio se la richiesta dell'utente è il pagamento di 300 euro, l'entità che andremo a definire sarà 300 che corrisponderà al quantitativo di euro che dovremo richiedere di trasferire.
 Il primo dataset che ho creato con Dialogflow era formato da pochi esempi di richieste di pagamento che ho indicato con l'intento chiamato \textbf{payRequest} formato da entità \textbf{receiver}, \textbf{quantity}, \textbf{currency} e \textbf{account}.
 \begin{figure}[H]
@@ -172,18 +172,23 @@ Il primo dataset che ho creato con Dialogflow era formato da pochi esempi di ric
  \caption{DialogFlow example}
 \end{figure}
 Il motivo della creazione di un dataset ristretto mi ha permesso di integrare questo nuovo strumento con il frontend testando i metodi di conversazione e l'effettivo funzionamento della chat.
-Il passo subito successivo sarebbe stato quello di sviluppare le richieste di pagamento effettive verso il gestionale della banca attraverso delle semplici chiamate REST di tipo get e post, in questa fase non ho ritenuto necessario preoccuparmi del problema dell'autenticazione dell'utente nel gestionale della banca rimandando il problema una volta integrato il prototipo nella web application.
+Il passo successivo sarebbe stato quello di sviluppare le richieste di pagamento effettive verso il gestionale della banca attraverso delle semplici chiamate REST di tipo get e post, in questa fase non ho ritenuto necessario preoccuparmi del problema dell'autenticazione dell'utente nel gestionale della banca rimandando il problema una volta integrato il prototipo nella web application.
 Una volta presentato il prototipo funzionante sono stati creati alcuni issues riguardanti la privacy dei dati degli utenti della banca.
-Il problema principale era il fatto che i dati come: iban, transazione e nome dell'utente, venivano gestiti da Dialogflow quindi da un utente terzo che avrebbe potuto usare questi dati per scopi propri, mi è stato di conseguenza richiesto di usare un altro strumento per eseguire queste funzioni.
-Per risolvere questo problema ho cominciato a cercare progetti di tipo open source che racchiudessero tutte le funzionalità fornite da Dialogflow permettendo lo sviluppo in locale e che fossero efficienti alla pari con il precendente strumento.
+Il problema principale era il fatto che i dati come: iban, transazione e nome dell'utente, venivano gestiti da Dialogflow quindi da un utente terzo che avrebbe potuto usare questi dati per scopi propri.
+Per risolvere questo problema ho cominciato a cercare progetti di tipo open source che racchiudessero tutte le funzionalità fornite da Dialogflow permettendo lo sviluppo in locale e che fossero efficienti alla pari con il precedente strumento.
 \iffalse
 https://rasa.com/about/
 https://rasa.com/docs/
 \fi
 Il progetto open source che ho scelto di usare è Rasa, framework scritto in linguaggio Python che consente di sviluppare una intelligenza artificiale utile per chatbot di qualsiasi tipo.
 Questo framework è diviso in 2 componenti principali: rasa\_nlu per eseguire le funzioni di natural language understanding consentendo quindi di classificare gli intenti ed estrarre le entità e rasa\_core che tramite machine learning gestisce i dialoghi con l'utente.
-L'implementazione di queste due componenti nella realtà che dovevo relizzare comportava la creazione di un dataset molto diverso rispetto al precedente e inoltre lo sviluppo del bot era fondato sull'implementazione di una classe Python che doveva contenere le funzionalità necessarie per completare le azioni richieste dal bot.
-Lo sviluppo del dataset necessario a rasa\_nlu è formato da file di configurazione in formato Json in cui è necessario definire alcuni esempi come fatto con Dialogflow, un file di questo tipo è formato da 3 campi: regex\_feature in cui si indicano i pattern di ricerca da usare, entity\_synonyms dove indicare il modo in cui i sinonimi debbano essere trattati e infine i common\_examples il fulcro vero e proprio della definizione degli esempi.
+L'implementazione di queste due componenti nella realtà che dovevo realizzare comportava la creazione di un dataset molto diverso rispetto al precedente e inoltre lo sviluppo del bot era fondato sull'implementazione di una classe Python che doveva contenere le funzionalità necessarie per completare le azioni richieste dal bot.
+Lo sviluppo del dataset necessario a rasa\_nlu è formato da file di configurazione in formato JSON in cui è necessario definire alcuni esempi come fatto con Dialogflow, un file di questo tipo è formato da 3 campi:
+\begin{itemize}
+\item regex\_feature in cui si indicano i pattern di ricerca da usare,
+\item entity\_synonyms dove indicare il modo in cui i sinonimi debbano essere trattati
+\item e infine i common\_examples il fulcro vero e proprio della definizione degli esempi.
+\end{itemize}
 \begin{lstlisting}[language=json,firstnumber=1]
 {
   "rasa_nlu_data": {
@@ -193,7 +198,7 @@ Lo sviluppo del dataset necessario a rasa\_nlu è formato da file di configurazi
   }
 }
 \end{lstlisting}
-Gli entity synonyms vengono principalmente usati per sostituire l'entità estratta dalla frase con un suo sinonimo questo viene fatto per unificare l'output delle entità estratte del test analizzato, nel mio caso ho unificato le valute monetarie europee a cui dovevo fare riferimento per il prototipo quindi euro e franco svizzero.
+Gli entity synonyms vengono principalmente usati per sostituire l'entità estratta dalla frase con un suo sinonimo, questo viene fatto per unificare l'output delle entità estratte del test analizzato, nel mio caso ho unificato le valute monetarie europee a cui dovevo fare riferimento per il prototipo quindi euro e franco svizzero.
 \begin{lstlisting}[language=json,firstnumber=1]
 "entity_synonyms": [
     {
@@ -206,24 +211,29 @@ Gli entity synonyms vengono principalmente usati per sostituire l'entità estrat
     }
 ]
 \end{lstlisting}
-I common examples a loro volta sono composti da dei campi: \textbf{text} che è la stringa dove viene inserita la frase che stiamo prendendo in esame, \textbf{intent} che è la definizione dell'intento della frase definita nel campo text e infine \textbf{entities} dove ci sono le definizioni di tutte quelle entità estratte dalla frase.
+I common examples a loro volta sono composti da dei campi:
+\begin{itemize}
+\item \textbf{text} che è la stringa dove viene inserita la frase che stiamo prendendo in esame, \
+\item \textbf{intent} che è la definizione dell'intento della frase definita nel campo text
+\item \textbf{entities} dove ci sono le definizioni di tutte quelle entità estratte dalla frase.
+\end{itemize}
 \begin{lstlisting}[language=json,firstnumber=1]
 "common_examples": [
     {
-        "text": "Vorrei pagare mario 800 euro dal mio conto personale",
+        "text": "Vorrei pagare Mario 800 euro dal mio conto personale",
         "intent": "payRequest",
         "entities": [{...}]
     }
 ]
 \end{lstlisting}
-Per definire una entity è necessario indicare: le posizioni di inizio e di fine della stringa, il valore effettivo che ha la stringa e infine il tipo da assegnare alla entità estratta.
-Prendiamo l'esempio sopra formato dalla frase "Vorrei pagare mario 800 euro dal mio conto personale" da cui possiamo affermare con certezza che l'intento della frase è una richiesta di pagamento e ci sono diverse informazioni che possiamo estrarre: mario che è il destinatario del pagamento, 800 che la quantità del versamento a cui è necessario associare una valuta che in questo caso è l'entità euro e infine il conto da dove estrarre i soldi per il pagamento cioè il conto personale dell'utente.
+Per definire una entity è necessario indicare: le posizioni di inizio e di fine della stringa, il valore effettivo che ha la stringa e infine il tipo da assegnare all'entità estratta.
+Prendiamo l'esempio sopra, formato dalla frase "Vorrei pagare Mario 800 euro dal mio conto personale" da cui possiamo determinare con certezza che l'intento della frase è una richiesta di pagamento e ci sono diverse informazioni che possiamo estrarre: \textbf{Mario} che è il destinatario del pagamento, \textbf{800} che la quantità del versamento a cui è necessario associare una valuta che in questo caso è l'entità euro e \textbf{il conto} da dove estrarre i soldi per il pagamento cioè il conto personale dell'utente.
 \begin{lstlisting}[language=json,firstnumber=1]
 "entities": [
     {
         "start": 14,
         "end": 18,
-        "value": "mario",
+        "value": "Mario",
         "entity": "destinataryAccount"
     },
     {
@@ -246,8 +256,8 @@ Prendiamo l'esempio sopra formato dalla frase "Vorrei pagare mario 800 euro dal 
     }
 ]
 \end{lstlisting}
-L'allenamento dell'intelligenza artificiale si baserà sui dati che abbiamo creato tramite questo dataset generando un modello da seguire in fase di esecuzione, per eseguire il task di training deve essere compilato un file di configurazione in cui viene definita la lingua del linguaggio naturale, nel mio caso italiano, e il motore che eseguirà il natural language processing.
-Il file di configurazione in formato YAML è stato completato con la lingua italiana e con pipeline Spacy consigliata dai docs di Rasa se il numero di esempi non supera le 1000 unità:
+L'allenamento dell'intelligenza artificiale si baserà sui dati che abbiamo creato tramite questo dataset generando un modello da utilizzare in fase di esecuzione. Per eseguire il task di training deve essere compilato un file di configurazione in cui viene definita la lingua del linguaggio naturale, nel mio caso italiano e il motore che eseguirà il natural language processing.
+Il file di configurazione in formato YAML è stato completato con la lingua italiana e con pipeline Spacy consigliata dai docs di Rasa nel caso in cui il numero di esempi non supera le 1000 unità:
 \begin{lstlisting}[language=yaml]
 language: "it"
 
@@ -255,7 +265,12 @@ pipeline: "spacy_sklearn"
 \end{lstlisting}
 A questo punto dobbiamo configurare e creare l'intelligenza artificiale che si occuperà della conversazione.
 Questo layer del backend, definito \textbf{CORE}, si occupa di gestire e mantenere la conversazione con l'utente eseguendo le azioni necessarie richieste, per questi scopi dobbiamo definire 3 componenti: domain, stories e actions.
-La componente domain è il dominio di interesse dell'intelligenza artificiale, la configurazione viene creata con un file YAML in cui vengono definiti: intents e entities da tracciare e riconoscere definiti precedentemente dal NLU, gli slots che sono dei contenitori di informazioni usabili e inizializzabili a run time, actions cioè le azioni che il bot può usare durante la conversazione e infine i templates cioè azioni default configurabili.
+La componente domain è il dominio di interesse dell'intelligenza artificiale, la cui configurazione viene creata con un file YAML in cui vengono definiti: \begin{itemize}
+\item \textbf{intents} e \textbf{entities} da tracciare e riconoscere definiti precedentemente dal NLU
+\item \textbf{gli slots} che sono dei contenitori di informazioni usabili e inizializzabili a run time
+\item \textbf{actions} cioè le azioni che il bot può usare durante la conversazione
+\item \textbf{i templates} cioè azioni default configurabili.
+\end{itemize}
 \begin{lstlisting}[language=yaml,firstnumber=1]
 slots:
   jsessionid:
@@ -311,10 +326,10 @@ Per far trasmettere la conoscenza di questo esempio all'intelligenza artificile 
 La prima riga, il cui primo carattere è \textbf{\#}, rappresenta una descrizione della storia e non ha effettivamente un riscontro effettivo sul training è solo utile a livello di sviluppo per aiutare a differenziare le varie storie che vengono scritte.
 Le due righe successive con primo carattere \textbf{*} e \textbf{-} sono rispettivamente la definizione dell'intento della frase dell'utente e l'azione di risposta del bot.
 Determinare delle stories il più realistiche possibili permette al bot di essere coerente con l'andamento della conversazione anche quando questa non segue i binari definiti dal modello generato.
-Infine la componente actions corrispondono alle modalità in cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento, che è quello che interessa a noi, o la lista di conti posseduti.
-Le varie actions vengono definite tramite classi Python le quali devono implementare un metodo che indichi l'esecuzione nel momento in cui viene invocata l'azione relativa.
-L'implementazione di questa classe deve definire 2 metodi principali: name che deve ritornare una stringa con il nome a cui il modello dovrà fare riferimento, e il metodo run che è l'implementazione dell'azione.
-Il metodo run assume 3 parametri che potranno essere usati all'interno della definizione del metodo: dispatcher che è usato per mandare messaggi di risposta all'utente, tracker dove vengono mantenute le informazioni della conversazione con l'utente, e domain del bot di cui abbiamo precedentemente parlato.
+Infine alla componente actions corrispondono le modalità con cui il bot può rispondere, non solo, all'interno di ogni action possono essere eseguite delle esecuzioni aggiuntive come la richiesta verso il server di effettuare un pagamento, che è quello che interessa a noi, o la lista di conti posseduti.
+Le varie actions vengono definite tramite classi Python le quali devono implementare un metodo che estende la classe action del framework rasa\_core in cui è necessario determinare l'azione relativa nel momento in cui viene invocata la classe.
+L'implementazione di questa classe deve definire 2 metodi principali: \textbf{name} che deve ritornare una stringa con il nome a cui il modello dovrà fare riferimento e \textbf{run} che è l'implementazione dell'azione.
+Il metodo run assume 3 parametri che potranno essere usati all'interno della definizione del metodo: \textbf{dispatcher} che è usato per mandare messaggi di risposta all'utente, \textbf{tracker} dove vengono mantenute le informazioni della conversazione con l'utente e \textbf{domain} del bot di cui abbiamo precedentemente parlato.
 \begin{python}
 class ActionGreetings(Action):
 
@@ -325,16 +340,16 @@ class ActionGreetings(Action):
         dispatcher.utter_message("Ciao")
         return []
 \end{python}
-Tramite la definizione di queste 3 componenti definiamo le componenti necessarie per la creazione del modello che verrà usato in fase di run time dal server rasa.
-Non c'è molto da dire per quanto riguarda il training del modello dato
-Essendo un tool completo rasa mette a disposizione anche gli strumenti per eseguire il train dei 2 modelli, basterà quindi indicare alcune configurazioni che dovrà prendere in considerazione durante l'esecuzione.
-Per quanto riguarda il NLU dovremo indicare principalmente: il config dove abbiamo definito la lingua e lo strumento di machine learning da usare, dove si trova il dataset e il nome del modello da restituire in output.
+Tramite la definizione di queste 3 parti definiamo le componenti necessarie per la creazione del modello che verrà usato in fase di run time dal server rasa.
+Non c'è molto da dire per quanto riguarda il training del modello dato.
+Essendo un tool completo Rasa mette a disposizione anche gli strumenti per eseguire il train dei 2 modelli. Basterà quindi indicare alcune configurazioni che andrà ad utilizzare durante l'esecuzione del processo di training.
+Per quanto riguarda il NLU dovremo indicare principalmente: \textbf{il config} dove abbiamo definito la lingua e \textbf{lo strumento di machine learning} da usare, dove si trova il dataset e il nome del modello da restituire in output.
 Allo stesso modo l'esecuzione del training del CORE avrà bisogno di informazioni riguardanti la posizione del domain e delle stories, inoltre il numero di epochs cioè il numero di iterazioni che il processo di machine learning dovrà eseguire.
-L'inizializzazione del server avrà bisogno dei due modelli creati e un indirizzo più una porta in cui rimanere in ascolto di richieste esterne, in più ho definito anche un token per rendere la comunicazione più sicura.
+L'inizializzazione del server avrà bisogno dei due modelli creati e un indirizzo più una porta in cui rimanere in ascolto di richieste esterne, inoltre ho definito anche un token per rendere la comunicazione più sicura.
 
 \section{Aggiornamento Frontend}
-Per poter comunicare con il nuovo server è necessario modificare alcune variabili del frontend quali: l'indirizzo del server, la porta in cui è possibile eseguire le chiamate, e il token usato.
-Per rendere più semplice la manutenzione delle informazioni riguardanti il server ho utilizzato un file di configurazione adibito:
+Per poter comunicare con il nuovo server è necessario modificare alcune variabili del frontend quali: \textbf{l'indirizzo del server},\textbf{la porta} in cui è possibile eseguire le chiamate e \textbf{il token} usato.
+Per rendere più semplice la manutenzione delle informazioni riguardanti il server, ho utilizzato un file di configurazione chiamato .env:
 \begin{lstlisting}
 SERVER_IP_RASA=127.0.0.1
 SERVER_PORT_RASA=5000
