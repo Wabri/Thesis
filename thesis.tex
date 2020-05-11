@@ -133,39 +133,33 @@ parts]{classicthesis}
     morestring=[b]',
     morestring=[b]"
 }
-\newcommand\YAMLcolonstyle{\color{red}}
-\newcommand\YAMLkeystyle{\color{black}}
-\newcommand\YAMLvaluestyle{\color{blue}}
 
-\lstdefinelanguage{betterHtml}{
-    language=html,
-    sensitive=true, 
+\lstdefinelanguage{betterHTML}{
+	language=html,
     alsoletter={<>=-},
-    otherkeywords={
-    % HTML tags
-    <html>, <head>, <title>, </title>, <meta, />, </head>, <body>,
-    <canvas, \/canvas>, <script>, <script, </script>, </body>, </html>, <!, html>, <style>, </style>, ><
-    },  
-    ndkeywords={
-    % General
-    =,
-    % HTML attributes
-    charset=, id=, width=, height=,
-    % CSS properties
-    border:, transform:, -moz-transform:, transition-duration:, transition-property:, transition-timing-function:
-    },  
-    morecomment=[s]{<!--}{-->},
+    otherkeywords={<html>, <head>, <title>, </title>, <meta, />, </head>, <body>,
+    <canvas, \/canvas>, <script>, <script, </script>, </body>, </html>, <!, html>, <style>, </style>, ><},
+    keywordstyle=\color{blue}\bfseries,
     tag=[s]
     numbers=left,
+    numberstyle=\scriptsize,
     stepnumber=1,
+    numbersep=8pt,
     showstringspaces=false,
     breaklines=true,
     frame=lines,
+    ndkeywordstyle=\color{darkgray}\bfseries,
     identifierstyle=\color{black},
     sensitive=false,
+    comment=[l]{//},
+    morecomment=[s]{<!--}{-->},
     commentstyle=\color{purple}\ttfamily,
     stringstyle=\color{red}\ttfamily,
 }
+
+\newcommand\YAMLcolonstyle{\color{red}}
+\newcommand\YAMLkeystyle{\color{black}}
+\newcommand\YAMLvaluestyle{\color{blue}}
 
 \makeatletter
 % here is a macro expanding to the name of the language
@@ -194,8 +188,8 @@ parts]{classicthesis}
   morestring=[b]',
   morestring=[b]",
   literate =    {---}{{\ProcessThreeDashes}}3
-                {>}{{\textcolor{red}\textgreater}}1     
-                {|}{{\textcolor{red}\textbar}}1 
+                {>}{{\textcolor{red}\textgreater}}1
+                {|}{{\textcolor{red}\textbar}}1
                 {\ -\ }{{\mdseries\ -\ }}3,
 }
 % switch to key style at EOL
@@ -226,7 +220,7 @@ parts]{classicthesis}
 \thispagestyle{empty}
 \begin{flushright}
 \null\vspace{\stretch {1}}
-\emph{"..." \break --- ...} \vspace{\stretch{2}}\null
+\emph{"Quello che voglio è essere padrone del mio destino, non di quello degli altri." \break --- Long John Silver} \vspace{\stretch{2}}\null
 \end{flushright}
 \input{Chapters/introduction.tex}
 \input{Chapters/pre-integration.tex}

@@ -1,4 +1,3 @@
-
 \chapter{Pre-integrazione}
 
 \section{Studio frontend}
@@ -13,18 +12,23 @@ O'Reilly Media
 
 https://docs.angularjs.org/tutorial/
 \fi
-Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal MVC (Model View Controller).
+Le prime fasi di tirocinio le ho concentrate sull'apprendimento dei vari strumenti necessari per comprendere l'architettura della web application formata principalmente da codice HTML con direttive AngularJS e Javascript, tenuti insieme dal Model View Controller (MVC).
 \iffalse
 https://www.javascript.com/about
 https://it.wikipedia.org/wiki/Javascript
 \fi
-Il MVC è un pattern architetturale basato su 3 componenti che hanno lo scopo di usare e gestire i dati con compiti diversi: il model deve gestire i dati e fornire metodi per usarli nonchè la logica e le regole dell'applicazione, il view ha lo scopo di rappresentare i dati sottoforma di informazione in modo tale da interagire con l'utente che li visualizzerà e infine il controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri 2 componenti modificando i dati gestiti dal controller o indicando una modalità differente di visualizzazione dei dati al view.
+MVC è un pattern architetturale utilizzato nella programmazione a oggetti e in modo consistente nello sviluppo web, permette di separare i vari componenti logici dell'architettura dell'applicativo. La suddivisione è formata da 3 elementi:
+\begin{itemize}
+  \item Model è il componente che gestisce direttamente i dati fornendo anche i metodi per poterli utilizzare nonchè la logica e le regole dell'applicazione;
+  \item View ha lo scopo di rappresentare i dati sotto forma di informazione in modo da interagire con l'utente che li visualizzerà;
+  \item Controller che attraverso istruzioni fornite dall'utente modifica lo stato degli altri componenti, modificando i dati del model o indicando una visualizzazione differente dei dati al view.
+\end{itemize}
 \begin{figure}[H]
  \centering
   \includegraphics[width=0.3\textwidth]{img/MVC-Process.png}
  \caption{MVC}
  \end{figure}
-Questa struttura viene usata principalmente per dividere la logica di business, che è la parte di eleborazione dati, con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una application.
+Questa struttura viene usata principalmente per dividere la logica di business, che è la parte di eleborazione dati, con l'interfaccia utente, migliorando quindi l'organizzazione dei processi interni di una applicazione.
 L'utilizzo di questo pattern direttamente sul client ha permesso un cambiamento importante per quanto riguarda le dynamic pages, cioè quello di non eseguire un redirect per modificare la pagina, ma eseguendo chiamate asincrone al server.
 Con il tempo è stato necessario fornire un framework che implementasse queste logiche riducendo i tempi di sviluppo andando a generalizzare tutti quei comportamenti classici del pattern MVC, se si parla di JavaScript senza alcun dubbio il framework più usato è AngularJs.
 Questa libreria funziona per mezzo di comandi, definiti direttive, che vengono inserite direttamente nel codice HTML che permettono di eseguire una sorta di comunicazione tra le varie parti del client. Il framework viene caricato all'interno della pagina attraverso l'import definito dal tag <script> in questo modo:
@@ -38,67 +42,21 @@ Questo script esegue una lettura dell'intera pagina dove saranno presenti le dir
 
 \section{Creazione della chat stand alone}
 Apprese le conoscenze base di questi strumenti ho cominciato con la stesura di una prima versione della chat testuale stand alone in JavaScript. Una chat presuppone la comunicazione tra 2 o più soggetti, nel mio caso un soggetto è rappresentato dall'utente della banca che usa la chat e l'altro il bot, una comunicazione di questo tipo è possibile implementarla usando i sockets.
-I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client invii un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguirà una azione specifica che nel caso di una chat è stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io  che tramite il metodo emit permette di emettere un messaggio in output:
-\begin{lstlisting}[language=JavaScript]
-// inviare un messaggio
-socket.emit('text message', text);
-\end{lstlisting}
+I sockets sono la soluzione migliore per chat real-time con comunicazioni bidirezionali tra un client e server, questo presuppone che un client invii un messaggio in chat e il server si prenda l'incarico di ridirezionare il messaggio al destinatario effettivo. Un socket rimane attivo in ascolto su un canale di comunicazione permettendo lo scambio in input e output di messaggi e in base al tipo di messaggio il socket eseguirà una azione specifica che nel caso di una chat è stampare o inviare un messaggio. Per fare questo ho usato una libreria JavaScript chiamata socket.io  che tramite i metodi di \textbf{emit} e di \textbf{on} permettono di emulare il comportamento dei sockets.
+Il messaggio emesso da un elemento, chiamiamolo sorgente, viene trasmesso tramite socket ad un altro elemento, chiamiamolo destinatario, che rimane in ascolto fintanto che il messaggio non viene trasmesso. La sorgente è l'elemento che eseguirà la funzione di \textbf{emit}, il destinatario invece sarà l'elemento che utilizzerà la funzione \textbf{on}.
 \iffalse
 https://socket.io
 \fi
-Un pacchetto trasmesso da un socket ha bisogno di 2 parametri: una chiave necessaria a riconoscere il tipo di messaggio trasmesso e un contenuto che nel nostro caso è il messaggio di testo.
-Una volta che il messaggio viene emesso, un altro socket deve riceverlo. \'{E} quindi necessario che il socket del controller sia sempre in ascolto di messaggi e in base al tipo del messaggio esegua una determinata azione:
-\begin{lstlisting}[language=JavaScript]
-// connessione e gestione del messaggio
-const io = require('socket.io')(server);
-io.on('connection', function(socket) {
-    socket.on('text message', (text) => {
-        // gestione del messaggio
-    });
-});
-\end{lstlisting}
+Un messaggio trasmesso tramite socket ha bisogno di 2 parametri: una chiave identificativa del messaggio e il contenuto vero e proprio che nel nostro caso è un testo. 
 \iffalse
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition
 https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisUtterance
 \fi
+
 Uno dei motivi principali dello sviluppo di un chatbot è quello di permettere all'utente di parlare direttamente al bot usando la voce. Per fare questo ho dovuto usare uno strumento che trasformasse la voce catturata dal microfono in un testo, per la precisione in una stringa da poter inviare tramite il socket al controller. Un tool di questo tipo è definito speech recognition, in italiano riconoscimento vocale.
 Ho usato una libreria sviluppata da Mozilla chiamata proprio SpeechRecognition che una volta impostata la lingua ha permesso di trasformare il parlato dell'utente in una stringa utilizzabile all'interno del client.
-Nel codice HTML ho inserito semplicemente un bottone che una volta attivato il microfono abilita la funzione di speech recognition, una volta che l'utente smette di parlare verrà restituita la stringa risultante che sarà inviata tramite socket.
-\begin{lstlisting}[language=JavaScript]
-// Declaration
-const SpeechRecognition = window.SpeechRecognition
-const recognition = new SpeechRecognition();
-// Properties
-recognition.lang = 'it-IT';
-recognition.interimResults = false;
-// event listener click button
-document.querySelector('button').addEventListener('click', () => {
-    recognition.start();
-});
-// event listener result recognition
-recognition.addEventListener('result', (e) => {
-    let last = e.result.length - 1;
-    let text = e.result[last][0].transcript;
-    socket.emit('chat message', text);
-});
-// event listener end recognition
-recognition.addEventListener('speechend', () => {
-  recognition.stop();
-});
-\end{lstlisting}
+Nel codice HTML ho inserito un bottone che una volta cliccato attiva il microfono permettendo alla funzione di speech recognition di acquisire una traccia audio, quando l'utente smetterà di parlare verrà restituita la stringa risultante che sarà inviata tramite socket.
 Inviato il messaggio dell'utente all'intelligenza questa genera una risposta che viene stampata nella pagina. Per rendere naturale la conversazione ho deciso di dare una voce al bot introducendo il procedimento inverso dello speech to text. Per fare questo ho usato la funzione fornita da mozilla chamata SpeechSynthesisUtterance che mi ha permesso di trasformare un testo in audio dando così una voce al bot.
-\begin{lstlisting}[language=JavaScript]
-function synthVoice(text) {
-    const synth = window.speechSynthesis;
-    const utterance = new SpeechSynthesisUtterance();
-    utterance.text = text;
-    synth.speak(utterance);
-}
-// event bot reply
-socket.on('bot reply', function (replyText) {
-    synthVoice(replyText);
-});
-\end{lstlisting}
 L'ultima cosa da fare per la parte frontend è stata una web interface minimale che permettesse di testare il funzionamento del bot, quindi c'era bisogno di:
 \begin{itemize}
 \item un bottone che attivasse lo speech to text,
